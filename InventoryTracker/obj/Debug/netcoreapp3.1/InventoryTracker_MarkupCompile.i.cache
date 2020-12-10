@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
 C:\Users\liam\source\repos\InventoryTracker\InventoryTracker\App.xaml
-11151548125
+41030710357
 
-5-789120120
+10-1623608131
 1921654412462
-MainWindow.xaml;
+Add.xaml;MainWindow.xaml;Report.xaml;Sell.xaml;
 
-False
+True
 
