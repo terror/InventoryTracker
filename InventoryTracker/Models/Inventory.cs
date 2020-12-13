@@ -11,15 +11,16 @@ namespace InventoryTracker.Models {
         private double revenue = 0;
 
         ///<summary> List of all items in the inventory. </summary>
-        private List<Item> items;
+        private List<Item> items = new List<Item>();
 
-        ///<summary> Generates an inventory with an empty list of items. </summary>
-        public Inventory()
-        {
-            items = new List<Item>();
+        public double Revenue {
+            get {
+                return this.revenue;
+            }
         }
 
         ///<summary> DESCRIPTION BLABLABLA </summary>
+
         public void LoadFile(string fileLocation)
         {
             throw new NotImplementedException("yeet");
@@ -37,24 +38,76 @@ namespace InventoryTracker.Models {
             throw new NotImplementedException("yeet");
         }
 
-        ///<summary> DESCRIPTION BLABLABLA </summary>
+        ///<summary> Returns a general report as string </summary>
         public string GenerateReport()
         {
-            throw new NotImplementedException("yeet");
+            StringBuilder sb = new StringBuilder();
+
+            for(int i = 0; i < this.items.Count; ++i) {
+                sb.AppendLine(string.Format("Name: {0}\n Quantity: {1}\n Cost: {2}\n Value: {3}", 
+                    items[i].Name, 
+                    items[i].Quantity, 
+                    items[i].Cost, 
+                    items[i].Cost * items[i].Quantity
+               ));
+            }
+
+            sb.AppendLine("\n--- Shopping List ---");
+            for(int i = 0; i < this.items.Count; ++i) {
+                if (items[i].Quantity < items[i].OptimalQuantity) 
+                    sb.AppendLine(string.Format("Item: {0}, Quantity: {1}, Optimal Quantity: {2} \n", items[i].Name, items[i].Quantity, items[i].OptimalQuantity));
+            }
+
+            sb.AppendLine(string.Format("\nTotal Value: {0:c}\n", GetValue()));
+            sb.AppendLine(string.Format("Revenue: {0:c}", revenue));
+
+            return sb.ToString();
         }
 
-        ///<summary> DESCRIPTION BLABLABLA </summary>
-        public void AddItems(List<Item> newItems)
+        ///<summary> Functionality for creating an individual item </summary>
+        public List<Item> CreateItem(Item newItem)
         {
-            // just add to items list. dont forget update value
-            throw new NotImplementedException("yeet");
+            this.items.Add(newItem);
+            return this.items;
         }
 
-        ///<summary> DESCRIPTION BLABLABLA </summary>
-        public void SellItems(List<Item> soldItems)
+        ///<summary> Functionality for adding an individual item</summary>
+        public void AddItem(string item) {
+            for (int i = 0; i < this.items.Count; ++i) { 
+                if (items[i].Name == item) { 
+                    ++this.items[i].Quantity;
+                    return;
+                }
+            }
+        }
+
+        ///<summary> Functionality for selling item(s) </summary>
+        public List<Item> SellItems(List<Item> soldItems)
         {
-            // just remove form list.dont forget update revenue
-            throw new NotImplementedException("yeet");
+            var idx = new Dictionary<string, int>();
+            for(int i = 0; i < this.items.Count; ++i) 
+                idx.Add(this.items[i].Name, i);
+
+            for(int i = 0; i < soldItems.Count; ++i) {
+                Item currItem = this.items[idx[soldItems[i].Name]];
+
+                int diff = currItem.Quantity - soldItems[i].Quantity;
+                revenue += (currItem.Cost) * diff;
+
+                if(diff == 0) 
+                    this.items.RemoveAt(idx[currItem.Name]);
+                 else 
+                    this.items[idx[currItem.Name]].Quantity = diff;
+            }
+            return this.items;
+        }
+
+        ///<summary> Returns the total value of all the items </summary>         
+        public double GetValue() {
+            double val = 0;
+            for (int i = 0; i < this.items.Count; ++i) 
+                val += this.items[i].Cost * this.items[i].Quantity;
+            return val;
         }
     }
 }
