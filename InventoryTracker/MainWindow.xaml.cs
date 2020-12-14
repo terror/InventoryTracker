@@ -28,23 +28,28 @@ namespace InventoryTracker {
             cmbSortOptions.SelectedIndex = 0;
         }
 
-        public void btn_CreateItemClick() {
+        public void AddItemToWindow(Item item) {
+            //spItemList
+            throw new NotImplementedException();
+        }
+
+        public void btnCreateItem_Click(object sender, RoutedEventArgs e) {
             Create createPage = new Create();
             createPage.Owner = this;
             createPage.ShowDialog();
         }
 
-        public void btn_SellItemClick() {
+        public void btnSellItem_Click(object sender, RoutedEventArgs e) {
             Sell sellPage = new Sell();
             sellPage.Owner = this;
-            sellPage.ShowDialog;
+            sellPage.ShowDialog();
         }
 
-        public void btn_LoadItemClick() {
+        public void btnLoadItem_Click(object sender, RoutedEventArgs e) {
             throw new NotImplementedException("oof");
         }
 
-        public void btn_SaveItemClick() {
+        public void btnSaveItem_Click(object sender, RoutedEventArgs e) {
             throw new NotImplementedException("oof");
         }
    }

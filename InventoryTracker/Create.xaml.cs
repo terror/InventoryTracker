@@ -19,39 +19,28 @@ namespace InventoryTracker
     public partial class Create : Window
     {
         MainWindow mainWindow = ((MainWindow)Application.Current.MainWindow);
-        Item item = new Item();
-
         public Create()
         {
-            txtName.Text = "Item #" + (item.GetID() + 1);
             InitializeComponent();
+            txtName.Text = "Item #" + Item.NewestID();
         }
 
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
-            // Validate fields
-            string cost = txtCost.Text; double parsedCost;
-            if (!double.TryParse(cost, out parsedCost) || parsedCost < 0) {
-                MessageBox.Show("Cost must be a valid integer or >= 0", "Cost", MessageBoxButton.OK, MessageBoxImage.Error);
+            // Validate fields and set item properties
+            try {
+                Item.CheckProperties(txtName.Text, txtCost.Text, txtOptimalQuantity.Text);
+            }
+            catch (Exception error) {
+                MessageBox.Show(error.Message, "Item Property Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
-            string optimalQuantity = txtOptimalQuantity.Text; int parsedOptimalQuantity;
-            if(!int.TryParse(optimalQuantity, out parsedOptimalQuantity) || parsedOptimalQuantity < 0) {
-                MessageBox.Show("Optimal Quantity must be a valid integer or >= 0", "Optimal Quantity", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            // Set item properties
-            item.Name = txtName.Text;
-            item.Category = txtCategory.Text;
-            item.Cost = parsedCost;
-            item.OptimalQuantity = parsedOptimalQuantity;
-            item.Supplier = txtSupplier.Text;
-            item.Location = txtLocation.Text;
+            Item item = new Item(txtName.Text, double.Parse(txtCost.Text), int.Parse(txtOptimalQuantity.Text), txtCategory.Text, txtSupplier.Text, txtLocation.Text);
 
             // Add to list
             mainWindow.inventory.CreateItem(item);
+
+            Close();
         }
     }
 }
