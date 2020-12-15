@@ -5,7 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InventoryTracker"
         mc:Ignorable="d"
-        Title="Inventory Tracker - Menu" Height="500" Width="600" Background="#1b1b1c" Foreground="#d2d2d9">
+        Title="Inventory Tracker - Menu"
+        Height="500" Width="600"
+        Background="{DynamicResource BackgroundColor}"
+        Foreground="{DynamicResource ForegroundColor}">
+    <Window.Resources>
+        <SolidColorBrush x:Key="BackgroundColor">#1b1b1c</SolidColorBrush>
+        <SolidColorBrush x:Key="ForegroundColor">#d2d2d9</SolidColorBrush>
+        <SolidColorBrush x:Key="ItemListColor1">#3b3b3c</SolidColorBrush>
+        <SolidColorBrush x:Key="ItemListColor2">#2b2b2c</SolidColorBrush>
+        <SolidColorBrush x:Key="ItemListBGColor">#0b0b0c</SolidColorBrush>
+    </Window.Resources>
+    
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -19,90 +30,54 @@
         <TextBlock Text="Inventory Tracker &#x1F6CD;" FontSize="30" FontWeight="Bold" Grid.Row="0"/>
 
         <!-- Sorting -->
-        <Grid HorizontalAlignment="Right" Margin="0,10,0,0" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Sort by" Grid.Column="0"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0" Grid.Row="1">
+            <TextBlock Text="Sort by" VerticalAlignment="Center" Grid.Column="0"/>
             <ComboBox x:Name="cmbSortOptions" Width="120" Margin="5,0,20,0" Grid.Column="1"/>
-        </Grid>
+        </StackPanel>
 
         <!-- Item List -->
-        <ScrollViewer Margin="20,10,20,20" Grid.Row="2" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel x:Name="spItemList" Background="#0b0b0c">
-                <Grid Background="#2b2b2c">
+        <ScrollViewer Tag="0" Margin="20,10,20,20" Grid.Row="2">
+            <StackPanel x:Name="spItemList" Background="{StaticResource ItemListBGColor}">
+                <!--<Grid Height="45" Background="{StaticResource ItemListColor2}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="20"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Item #1" FontSize="20" FontWeight="DemiBold" Padding="5" Grid.Column="0"/>
-                    <TextBlock Text="Quantity:" VerticalAlignment="Center" Grid.Column="2"/>
-                    <TextBlock Text="0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4"/>
-                </Grid>
-                <Grid Background="#3b3b3c">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="20"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Item #2" FontSize="20" FontWeight="DemiBold" Padding="5" Grid.Column="0"/>
-                    <TextBlock Text="Quantity:" VerticalAlignment="Center" Grid.Column="2"/>
-                    <TextBlock Text="0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4"/>
-                </Grid>
-                <Grid Background="#2b2b2c">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="40"/>
                         <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="20"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Item #3" FontSize="20" FontWeight="DemiBold" Padding="5" Grid.Column="0"/>
-                    <TextBlock Text="Quantity:" VerticalAlignment="Center" Grid.Column="2"/>
-                    <TextBlock Text="0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4"/>
-                </Grid>
-                <Grid Background="#3b3b3c">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="20"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Item #4" FontSize="20" FontWeight="DemiBold" Padding="5" Grid.Column="0"/>
-                    <TextBlock Text="Quantity:" VerticalAlignment="Center" Grid.Column="2"/>
-                    <TextBlock Text="0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4"/>
-                </Grid>
+                    <TextBlock Text="Sample Item (not interactable)" TextTrimming="CharacterEllipsis" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Padding="5" Grid.Column="1"/>
+                    <TextBlock Text="Quantity:" VerticalAlignment="Center" Grid.Column="3"/>
+                    <TextBlock Text="0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="5"/>
+                    <Button Content="➕" Foreground="{StaticResource BackgroundColor}" VerticalAlignment="Center" Padding="5" Margin="5" Grid.Column="7"/>
+                </Grid>-->
             </StackPanel>
         </ScrollViewer>
 
-        <!-- Create / Sell / Load / Save -->
+        <!-- Create / Sell / Report / Load / Save -->
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <Button Click="btnCreateItem_Click" Content="Create" Padding="5" Grid.Column="1"/>
-            <Button Click="btnSellItem_Click" Content="Sell" IsEnabled="False" Padding="5" Grid.Column="3"/>
-            <Button Click="btnLoadItem_Click" Content="Load" Padding="5" Grid.Column="5"/>
-            <Button Click="btnSaveItem_Click" Content="Save" Padding="5" Grid.Column="7"/>
+            <Button Click="btnCreateItem_Click" Content="Create" Foreground="{StaticResource BackgroundColor}" Padding="5" Grid.Column="1"/>
+            <Button x:Name="btnSellItem" Click="btnSellItem_Click" Content="Sell" IsEnabled="False" Foreground="{StaticResource BackgroundColor}" Padding="5" Grid.Column="3"/>
+            <Button Click="btnReportItem_Click" Content="Report" Foreground="{StaticResource BackgroundColor}" Padding="5" Grid.Column="5"/>
+            <Button Click="btnLoadItem_Click" Content="Load" Foreground="{StaticResource BackgroundColor}" Padding="5" Grid.Column="7"/>
+            <Button Click="btnSaveItem_Click" Content="Save" Foreground="{StaticResource BackgroundColor}" Padding="5" Grid.Column="9"/>
         </Grid>
         
         <!-- Value / Revenue -->

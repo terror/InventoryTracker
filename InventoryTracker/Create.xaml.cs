@@ -16,17 +16,15 @@ namespace InventoryTracker
     /// <summary>
     /// Interaction logic for Create.xaml
     /// </summary>
-    public partial class Create : Window
-    {
+    public partial class Create : Window {
         MainWindow mainWindow = ((MainWindow)Application.Current.MainWindow);
-        public Create()
-        {
+
+        public Create() {
             InitializeComponent();
             txtName.Text = "Item #" + Item.NewestID();
         }
 
-        private void btnCreate_Click(object sender, RoutedEventArgs e)
-        {
+        private void btnCreate_Click(object sender, RoutedEventArgs e) {
             // Validate fields and set item properties
             try {
                 Item.CheckProperties(txtName.Text, txtCost.Text, txtOptimalQuantity.Text);
@@ -39,6 +37,7 @@ namespace InventoryTracker
 
             // Add to list
             mainWindow.inventory.CreateItem(item);
+            mainWindow.AddItemToWindow(item);
 
             Close();
         }

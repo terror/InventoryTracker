@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace InventoryTracker.Models {
-    public class Inventory {
-        ///<summary> Total cost of all items in the inventory. </summary>
-        private double value = 0;
-
-        ///<summary> Total money made from selling items from the inventory. </summary>
+    public class Inventory {       
+        ///<summary> Total money made from selling items from the inventory</summary>
         private double revenue = 0;
 
         ///<summary> List of all items in the inventory. </summary>
@@ -84,6 +81,8 @@ namespace InventoryTracker.Models {
         ///<summary> Functionality for selling item(s) </summary>
         public List<Item> SellItems(List<Item> soldItems)
         {
+            // Feels weird to have an array of instances of Item for just reducing the qty of Inventory items...
+            // Maybe we can make a SoldItem that inherits Items. Only properties would be id and qty to remove.
             var idx = new Dictionary<string, int>();
             for(int i = 0; i < this.items.Count; ++i) 
                 idx.Add(this.items[i].Name, i);
@@ -108,6 +107,15 @@ namespace InventoryTracker.Models {
             for (int i = 0; i < this.items.Count; ++i) 
                 val += this.items[i].Cost * this.items[i].Quantity;
             return val;
+        }
+
+        ///<summary> Returns an item according to a provided ID </summary>
+        public Item GetItemFromID(int id) {
+            foreach (Item item in items) {
+                if (item.ID == id)
+                    return item;
+            }
+            return null;
         }
     }
 }

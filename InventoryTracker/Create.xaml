@@ -5,7 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InventoryTracker"
         mc:Ignorable="d"
-        Title="Create a new item" SizeToContent="WidthAndHeight" Background="#1b1b1c" Foreground="#d2d2d9">
+        Title="Create a new item"
+        SizeToContent="Height" Width="350"
+        Background="{DynamicResource BackgroundColor}"
+        Foreground="{DynamicResource ForegroundColor}">
+    <Window.Resources>
+        <SolidColorBrush x:Key="BackgroundColor">#1b1b1c</SolidColorBrush>
+        <SolidColorBrush x:Key="ForegroundColor">#d2d2d9</SolidColorBrush>
+    </Window.Resources>
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -13,7 +20,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="10"/>
+            <RowDefinition MinHeight="10" Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
@@ -28,37 +35,44 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="5"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="10"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="10"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="10"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="10"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="10"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="5"/>
             </Grid.RowDefinitions>
             
             <!-- Name -->
-            <TextBlock Text="Name *" FontWeight="DemiBold" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0"/>
-            <TextBox x:Name="txtName" Margin="0,5" Grid.Row="0" Grid.Column="2"/>
+            <TextBlock Text="Name *" FontWeight="DemiBold" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+            <TextBox x:Name="txtName" Grid.Row="1" Grid.Column="2"/>
 
             <!-- Cost -->
-            <TextBlock Text="Cost ($) *" FontWeight="DemiBold" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
-            <TextBox x:Name="txtCost" Text="1.00" Margin="0,5" Grid.Row="1" Grid.Column="2"/>
+            <TextBlock Text="Cost ($) *" FontWeight="DemiBold" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0"/>
+            <TextBox x:Name="txtCost" Text="1.00" Grid.Row="3" Grid.Column="2"/>
 
             <!-- Optimal Quantity -->
-            <TextBlock Text="Optimal Quantity *" FontWeight="DemiBold" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
-            <TextBox x:Name="txtOptimalQuantity" Text="1" Margin="0,5" Grid.Row="2" Grid.Column="2"/>
+            <TextBlock Text="Optimal Quantity *" FontWeight="DemiBold" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0"/>
+            <TextBox x:Name="txtOptimalQuantity" Text="1" Grid.Row="5" Grid.Column="2"/>
 
             <!-- Category -->
-            <TextBlock Text="Category" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0"/>
-            <TextBox x:Name="txtCategory" Margin="0,5" Grid.Row="3" Grid.Column="2"/>
+            <TextBlock Text="Category" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0"/>
+            <TextBox x:Name="txtCategory" Grid.Row="7" Grid.Column="2"/>
 
             <!-- Supplier -->
-            <TextBlock Text="Supplier" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0"/>
-            <TextBox x:Name="txtSupplier" Margin="0,5" Grid.Row="4" Grid.Column="2"/>
+            <TextBlock Text="Supplier" VerticalAlignment="Center" Grid.Row="9" Grid.Column="0"/>
+            <TextBox x:Name="txtSupplier" Grid.Row="9" Grid.Column="2"/>
             
             <!-- Location -->
-            <TextBlock Text="Location" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0"/>
-            <TextBox x:Name="txtLocation" Margin="0,5" Grid.Row="5" Grid.Column="2"/>
+            <TextBlock Text="Location" VerticalAlignment="Center" Grid.Row="11" Grid.Column="0"/>
+            <TextBox x:Name="txtLocation" Grid.Row="11" Grid.Column="2"/>
         </Grid>
 
         <TextBlock Text="Note: Entries with * cannot be left empty." FontSize="10" FontStyle="Italic" Grid.Row="4"/>
@@ -69,8 +83,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Click="btnCreate_Click" Content="Create" Padding="5" Margin="5,0" Grid.Column="0"/>
-            <Button IsCancel="True" Content="Cancel" Padding="5" Margin="5,0" Grid.Column="1"/>
+            <Button Click="btnCreate_Click" Content="Create" MaxWidth="150" Padding="5" Margin="5,0" Grid.Column="0"/>
+            <Button IsCancel="True" Content="Cancel" MaxWidth="150" Padding="5" Margin="5,0" Grid.Column="1"/>
         </Grid>
     </Grid>
 </Window>

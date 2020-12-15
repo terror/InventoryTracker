@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
 C:\Users\maxen\Documents\GitHub\InventoryTracker\InventoryTracker\App.xaml
-4302880757
+4-1280879879
 
-81134116088
+8782494022
 1921654412462
-Create.xaml;MainWindow.xaml;Report.xaml;Sell.xaml;
+Create.xaml;Details.xaml;MainWindow.xaml;Sell.xaml;
 
 False
 

@@ -1,0 +1,91 @@
+﻿<Window x:Class="InventoryTracker.Details"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InventoryTracker"
+        mc:Ignorable="d"
+        SizeToContent="Height" Width="600"
+        Background="{DynamicResource BackgroundColor}"
+        Foreground="{DynamicResource ForegroundColor}">
+    <Window.Resources>
+        <SolidColorBrush x:Key="BackgroundColor">#1b1b1c</SolidColorBrush>
+        <SolidColorBrush x:Key="ForegroundColor">#d2d2d9</SolidColorBrush>
+    </Window.Resources>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition MinHeight="15" Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Text="Edit details about this item" FontSize="30" FontWeight="Bold" Grid.Row="0"/>
+
+        <!-- Item Properties -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition MinWidth="150" Width="*"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition MinWidth="150" Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Name -->
+            <TextBlock Text="Name:" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0"/>
+            <TextBox x:Name="txtName" Grid.Row="0" Grid.Column="2"/>
+
+            <!-- ID -->
+            <TextBlock Text="ID:" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="4"/>
+            <TextBox x:Name="txtID" IsEnabled="False" Grid.Row="0" Grid.Column="6"/>
+
+            <!-- Cost -->
+            <TextBlock Text="Cost ($):" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0"/>
+            <TextBox x:Name="txtCost" Grid.Row="2" Grid.Column="2"/>
+
+            <!-- Category -->
+            <TextBlock Text="Category:" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="4"/>
+            <TextBox x:Name="txtCategory" Grid.Row="2" Grid.Column="6"/>
+
+            <!-- Quantity -->
+            <TextBlock Text="Current Quantity:" HorizontalAlignment="Right" Grid.Row="4" Grid.Column="0"/>
+            <TextBox x:Name="txtQuantity" IsEnabled="False" Grid.Row="4" Grid.Column="2"/>
+
+            <!-- Supplier -->
+            <TextBlock Text="Supplier:" HorizontalAlignment="Right" Grid.Row="4" Grid.Column="4"/>
+            <TextBox x:Name="txtSupplier" Grid.Row="4" Grid.Column="6"/>
+
+            <!-- Optimal Quantity -->
+            <TextBlock Text="Optimal Quantity:" HorizontalAlignment="Right" Grid.Row="6" Grid.Column="0"/>
+            <TextBox x:Name="txtOptimalQuantity" Grid.Row="6" Grid.Column="2"/>
+
+            <!-- Location -->
+            <TextBlock Text="Location:" HorizontalAlignment="Right" Grid.Row="6" Grid.Column="4"/>
+            <TextBox x:Name="txtLocation" Grid.Row="6" Grid.Column="6"/>
+        </Grid>
+
+        <!-- Done / Cancel -->
+        <Grid Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Click="btnEdit_Click" Content="Done" MaxWidth="150" Padding="5" Margin="5,0" Grid.Column="0"/>
+            <Button IsCancel="True" Content="Cancel" MaxWidth="150" Padding="5" Margin="5,0" Grid.Column="1"/>
+        </Grid>
+    </Grid>
+</Window>
