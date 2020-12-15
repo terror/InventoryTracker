@@ -1,20 +1,20 @@
 ﻿InventoryTracker
-
+1.0.0.0
 
 winexe
 C#
 .cs
-C:\Users\maxen\Documents\GitHub\InventoryTracker\InventoryTracker\obj\Debug\netcoreapp3.1\
+C:\Users\liam\source\repos\InventoryTracker\InventoryTracker\obj\Debug\netcoreapp3.1\
 InventoryTracker
 none
 false
-TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
-C:\Users\maxen\Documents\GitHub\InventoryTracker\InventoryTracker\App.xaml
+TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1;
+C:\Users\liam\source\repos\InventoryTracker\InventoryTracker\App.xaml
 4-1280879879
 
-9549887414
+10911084613
 1921654412462
 Create.xaml;Details.xaml;MainWindow.xaml;Sell.xaml;
 
-True
+False
 

@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using InventoryTracker.Models;
+using Microsoft.Win32;
+
 
 namespace InventoryTracker {
     /// <summary>
@@ -21,6 +17,7 @@ namespace InventoryTracker {
     public partial class MainWindow : Window {
         public Inventory inventory = new Inventory();
         private bool itemGridBGColor1 = true;
+        private string saveLocation;
 
         public MainWindow() {
             InitializeComponent();
@@ -129,7 +126,6 @@ namespace InventoryTracker {
             bool itemGridSellBGColor1 = true;
             foreach (Grid itemGrid in spItemList.Children.OfType<Grid>()) {
                 if (itemGrid.Tag != null && int.Parse(((TextBlock)itemGrid.Children[2]).Text) > 0) {
-                    
                     Grid itemGridSell = new Grid {
                         Tag = itemGrid.Tag,
                         Height = itemGrid.Height
@@ -195,23 +191,42 @@ namespace InventoryTracker {
                     itemGridSell.Children.Add(txt4);
 
                     sellPage.spItemList.Children.Add(itemGridSell);
-                }  
+                }
             }
-
             sellPage.ShowDialog();
         }
 
-        public void btnReportItem_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException("oof");
+        public void btnReportItem_Click(object sender, RoutedEventArgs e) {
+            string report = inventory.GenerateReport();
+            MessageBox.Show(report, "Item Report", MessageBoxButton.OK);
         }
 
         public void btnLoadItem_Click(object sender, RoutedEventArgs e) {
+            // var serializer = new JavascriptSerializer();
+            // Load file from specific directory, deserialize string to dict
+            // Loop through JSON and add items to MainWindow
             throw new NotImplementedException("oof");
         }
 
         public void btnSaveItem_Click(object sender, RoutedEventArgs e) {
-            throw new NotImplementedException("oof");
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Json file|*.json";
+            if (saveFileDialog.ShowDialog() == true) {
+                MessageBox.Show("Saved information to " + saveFileDialog.FileName);
+                saveLocation = saveFileDialog.FileName;
+            }
+            SaveDataToFile();
+            Close();
+        }
+        private void SaveDataToFile() {
+            try {
+                // var serializer = new JavaScriptSerializer();
+                // File.WriteAllLines(serializer.Serialize(inventory.items));
+            }
+            catch (Exception e) {
+                MessageBox.Show(e.Message, "Saving Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
         }
 
         private void spItemListChild_MouseDown(object sender, MouseEventArgs e) {

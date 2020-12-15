@@ -8,7 +8,7 @@ namespace InventoryTracker.Models {
         private double revenue = 0;
 
         ///<summary> List of all items in the inventory. </summary>
-        private List<Item> items = new List<Item>();
+        public List<Item> items = new List<Item>();
 
         public double Revenue {
             get {
