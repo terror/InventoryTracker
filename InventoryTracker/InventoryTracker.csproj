@@ -7,7 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
+    <None Remove="Images\Icon.ico" />
+    <None Remove="Images\TrashIcon.png" />
+    <None Remove="Images\TrashIconFocus.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Images\TrashIcon.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Icon.ico" />
+    <Resource Include="Images\TrashIcon.png" />
+    <Resource Include="Images\TrashIconFocus.png" />
   </ItemGroup>
 
 </Project>

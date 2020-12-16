@@ -32,18 +32,13 @@ namespace InventoryTracker {
                 return;
             }
             Item item = mainWindow.inventory.GetItemFromID((int)Tag);
-            item.Name = txtName.Text;
-            item.Cost = int.Parse(txtCost.Text);
-            item.OptimalQuantity = int.Parse(txtOptimalQuantity.Text);
-            item.Category = txtCategory.Text;
-            item.Supplier = txtSupplier.Text;
-            item.Location = txtLocation.Text;
+            item.UpdateDetails(txtName.Text, double.Parse(txtCost.Text), int.Parse(txtOptimalQuantity.Text), txtCategory.Text, txtSupplier.Text, txtLocation.Text);
 
             // Update main window -- IF DATA IS SORTED BY ANYTHING ASIDE FROM ID AND QUANTITY, WILL NEED TO SORT AGAIN
             Grid itemGrid = mainWindow.GetGridForItem(item.ID);
             TextBlock itemNameTextBlock = itemGrid.Children[0] as TextBlock;
             itemNameTextBlock.Text = item.Name;
-            mainWindow.txtValue.Text = mainWindow.inventory.GetValue().ToString("C");
+            mainWindow.UpdateTotalValue();
 
             Close();
         }

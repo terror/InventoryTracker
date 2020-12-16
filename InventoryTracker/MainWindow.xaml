@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:InventoryTracker"
         mc:Ignorable="d"
         Title="Inventory Tracker - Menu"
+        Icon="/Images/Icon.ico"
         Height="500" Width="600"
         Background="{DynamicResource BackgroundColor}"
         Foreground="{DynamicResource ForegroundColor}">
@@ -15,6 +16,27 @@
         <SolidColorBrush x:Key="ItemListColor1">#3b3b3c</SolidColorBrush>
         <SolidColorBrush x:Key="ItemListColor2">#2b2b2c</SolidColorBrush>
         <SolidColorBrush x:Key="ItemListBGColor">#0b0b0c</SolidColorBrush>
+        <Style x:Key="DeleteButton" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DeleteButtonImage" TargetType="{x:Type Image}">
+            <Setter Property="Source" Value="/Images/TrashIcon.png"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Source" Value="/Images/TrashIconFocus.png"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     
     <Grid Margin="20">
@@ -23,6 +45,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         
@@ -48,12 +71,17 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="40"/>
-                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Sample Item (not interactable)" TextTrimming="CharacterEllipsis" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Center" Padding="5" Grid.Column="1"/>
                     <TextBlock Text="Quantity:" VerticalAlignment="Center" Grid.Column="3"/>
                     <TextBlock Text="0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="5"/>
                     <Button Content="➕" Foreground="{StaticResource BackgroundColor}" VerticalAlignment="Center" Padding="5" Margin="5" Grid.Column="7"/>
+                    <Button Style="{StaticResource DeleteButton}" Grid.Column="9">
+                        <Image Style="{StaticResource DeleteButtonImage}"/>
+                    </Button>
                 </Grid>-->
             </StackPanel>
         </ScrollViewer>
@@ -80,21 +108,23 @@
             <Button Click="btnSaveItem_Click" Content="Save" Foreground="{StaticResource BackgroundColor}" Padding="5" Grid.Column="9"/>
         </Grid>
         
-        <!-- Value / Revenue -->
-        <Grid Margin="0,20,0,0" Grid.Row="5">
+        <!-- Value / Revenue / Credits -->
+        <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Value:" Grid.Column="0"/>
-            <TextBlock x:Name="txtValue" Text="$0.00" Grid.Column="2"/>
-            <TextBlock Text="Revenue:" Grid.Column="4"/>
-            <TextBlock x:Name="txtRevenue" Text="$0.00" Grid.Column="6"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Total Value:" FontSize="14" Grid.Column="0" Grid.Row="0"/>
+            <TextBlock x:Name="txtValue" Text="$0.00" FontSize="14" Grid.Column="2" Grid.Row="0"/>
+            <TextBlock Text="Total Revenue:" FontSize="14" Grid.Column="0" Grid.Row="1"/>
+            <TextBlock x:Name="txtRevenue" Text="$0.00" FontSize="14" Grid.Column="2" Grid.Row="1"/>
+            <TextBlock Text="Made by Liam Scalzulli and Maxence Roy (2020)" FontStyle="Italic" Opacity="0.6" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="3" Grid.Row="1"/>
         </Grid>
     </Grid>
 </Window>

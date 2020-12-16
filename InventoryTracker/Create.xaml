@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:InventoryTracker"
         mc:Ignorable="d"
         Title="Create a new item"
+        Icon="/Images/Icon.ico"
         SizeToContent="Height" Width="350"
         Background="{DynamicResource BackgroundColor}"
         Foreground="{DynamicResource ForegroundColor}">

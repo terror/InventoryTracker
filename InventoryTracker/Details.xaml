@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InventoryTracker"
         mc:Ignorable="d"
+        Icon="/Images/Icon.ico"
         SizeToContent="Height" Width="600"
         Background="{DynamicResource BackgroundColor}"
         Foreground="{DynamicResource ForegroundColor}">

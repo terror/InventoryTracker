@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Collections.Generic;
 using InventoryTracker.Models;
+using Microsoft.Win32;
+
 
 namespace InventoryTracker {
     /// <summary>
@@ -38,7 +33,6 @@ namespace InventoryTracker {
                 Height = 45
             };
             itemGrid.MouseDown += new MouseButtonEventHandler(spItemListChild_MouseDown);
-            // bgcolor thing assumes item will be inserted at the end of the list. wont work if the item needs to be inserted elsewhere
             if (itemGridBGColor1) {
                 itemGrid.Background = (Brush)FindResource("ItemListColor1");
                 itemGridBGColor1 = false;
@@ -56,7 +50,9 @@ namespace InventoryTracker {
             ColumnDefinition colDef6 = new ColumnDefinition { Width = GridLength.Auto };
             ColumnDefinition colDef7 = new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) };
             ColumnDefinition colDef8 = new ColumnDefinition { Width = new GridLength(40, GridUnitType.Pixel) };
-            ColumnDefinition colDef9 = new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) };
+            ColumnDefinition colDef9 = new ColumnDefinition { Width = new GridLength(5, GridUnitType.Pixel) };
+            ColumnDefinition colDef10 = new ColumnDefinition { Width = new GridLength(45, GridUnitType.Pixel) };
+            ColumnDefinition colDef11 = new ColumnDefinition { Width = new GridLength(5, GridUnitType.Pixel) };
             itemGrid.ColumnDefinitions.Add(colDef1);
             itemGrid.ColumnDefinitions.Add(colDef2);
             itemGrid.ColumnDefinitions.Add(colDef3);
@@ -66,8 +62,10 @@ namespace InventoryTracker {
             itemGrid.ColumnDefinitions.Add(colDef7);
             itemGrid.ColumnDefinitions.Add(colDef8);
             itemGrid.ColumnDefinitions.Add(colDef9);
+            itemGrid.ColumnDefinitions.Add(colDef10);
+            itemGrid.ColumnDefinitions.Add(colDef11);
 
-            // Add TextBlocks and Button
+            // Add TextBlocks and Buttons
             TextBlock txt1 = new TextBlock {
                 Text = item.Name,
                 TextTrimming = TextTrimming.CharacterEllipsis,
@@ -94,16 +92,26 @@ namespace InventoryTracker {
             Grid.SetColumn(txt3, 5);
             itemGrid.Children.Add(txt3);
 
-            Button btn = new Button {
+            Button btn1 = new Button {
                 Content = "➕",
                 Foreground = (Brush)FindResource("BackgroundColor"),
                 VerticalAlignment = VerticalAlignment.Center,
                 Padding = new Thickness(5),
                 Margin = new Thickness(5)
             };
-            Grid.SetColumn(btn, 7);
-            btn.Click += new RoutedEventHandler(spItemListChildButton_Click);
-            itemGrid.Children.Add(btn);
+            Grid.SetColumn(btn1, 7);
+            btn1.Click += new RoutedEventHandler(spItemListChildAddButton_Click);
+            itemGrid.Children.Add(btn1);
+
+            Button btn2 = new Button {
+                Style = (Style)FindResource("DeleteButton"),
+                Content = new Image {
+                    Style = (Style)FindResource("DeleteButtonImage")
+                }
+            };
+            Grid.SetColumn(btn2, 9);
+            btn2.Click += new RoutedEventHandler(spItemListChildDelButton_Click);
+            itemGrid.Children.Add(btn2);
 
             // Add to StackPanel -- IF DATA IS SORTED BY ANYTHING ASIDE FROM ID AND QUANTITY, WILL NEED TO SORT AGAIN
             spItemList.Children.Add(itemGrid);
@@ -117,23 +125,52 @@ namespace InventoryTracker {
             return null;
         }
 
+        public void UpdateItemListColorPattern() {
+            itemGridBGColor1 = true;
+            foreach (Grid itemGrid in spItemList.Children.OfType<Grid>()) {
+                if (itemGridBGColor1) {
+                    itemGrid.Background = (Brush)FindResource("ItemListColor1");
+                    itemGridBGColor1 = false;
+                } else {
+                    itemGrid.Background = (Brush)FindResource("ItemListColor2");
+                    itemGridBGColor1 = true;
+                }
+            }
+        }
+
+        public void UpdateTotalValue() {
+            txtValue.Text = inventory.GetTotalValue().ToString("C");
+        }
+
+        public void UpdateTotalRevenue() {
+            txtRevenue.Text = inventory.GetTotalRevenue().ToString("C");
+        }
+
         public void btnCreateItem_Click(object sender, RoutedEventArgs e) {
-            Create createPage = new Create { Owner = this };
+            Create createPage = new Create {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
             createPage.ShowDialog();
         }
 
         public void btnSellItem_Click(object sender, RoutedEventArgs e) {
-            Sell sellPage = new Sell { Owner = this };
+            Sell sellPage = new Sell {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
 
             // Copy Grids from Main Window for items in stock (Quantity > 0)
             bool itemGridSellBGColor1 = true;
             foreach (Grid itemGrid in spItemList.Children.OfType<Grid>()) {
                 if (itemGrid.Tag != null && int.Parse(((TextBlock)itemGrid.Children[2]).Text) > 0) {
-                    
+                    // Create Grid
+                    // IMPORTANT: Tag is used to differentiate each item using their ID
                     Grid itemGridSell = new Grid {
                         Tag = itemGrid.Tag,
                         Height = itemGrid.Height
                     };
+                    // No need to dynamically update the background for this StackPanel since items cannot be deleted from the list.
                     if (itemGridSellBGColor1) {
                         itemGridSell.Background = (Brush)sellPage.FindResource("ItemListColor1");
                         itemGridSellBGColor1 = false;
@@ -142,6 +179,7 @@ namespace InventoryTracker {
                         itemGridSellBGColor1 = true;
                     }
 
+                    // Define Columns
                     ColumnDefinition colDef1 = new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) };
                     ColumnDefinition colDef2 = new ColumnDefinition();
                     ColumnDefinition colDef3 = new ColumnDefinition { Width = new GridLength(20, GridUnitType.Pixel) };
@@ -161,6 +199,7 @@ namespace InventoryTracker {
                     itemGridSell.ColumnDefinitions.Add(colDef8);
                     itemGridSell.ColumnDefinitions.Add(colDef9);
 
+                    // Add TextBlocks and TextBox
                     TextBlock txt1 = new TextBlock {
                         Text = ((TextBlock)itemGrid.Children[0]).Text,
                         TextTrimming = TextTrimming.CharacterEllipsis,
@@ -194,24 +233,60 @@ namespace InventoryTracker {
                     Grid.SetColumn(txt4, 7);
                     itemGridSell.Children.Add(txt4);
 
+                    // Add to StackPanel
                     sellPage.spItemList.Children.Add(itemGridSell);
-                }  
+                }
             }
-
             sellPage.ShowDialog();
         }
 
-        public void btnReportItem_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException("oof");
+        public void btnReportItem_Click(object sender, RoutedEventArgs e) {
+            string report = inventory.GenerateReport();
+            MessageBox.Show(report, "Item Report", MessageBoxButton.OK);
         }
 
         public void btnLoadItem_Click(object sender, RoutedEventArgs e) {
-            throw new NotImplementedException("oof");
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Json file|*.json";
+            if (openFileDialog.ShowDialog() == true) {
+                List<Item> itemList;
+                try {
+                    itemList = inventory.LoadFromFile(openFileDialog.FileName);
+                }
+                catch (Exception exception) {
+                    MessageBox.Show("File could not be read:\n" + exception.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                MessageBox.Show("Successfully loaded information from " + openFileDialog.FileName, "Load successful");
+
+                // Update MainWindow
+                spItemList.Children.Clear();
+                foreach (Item item in itemList) {
+                    AddItemToWindow(item);
+                }
+                UpdateTotalValue();
+                UpdateTotalRevenue();
+                if (inventory.IsEmpty()) {
+                    btnSellItem.IsEnabled = false;
+                } else {
+                    btnSellItem.IsEnabled = true;
+                }
+            }
         }
 
         public void btnSaveItem_Click(object sender, RoutedEventArgs e) {
-            throw new NotImplementedException("oof");
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Json file|*.json";
+            if (saveFileDialog.ShowDialog() == true) {
+                try {
+                    inventory.SaveToFile(saveFileDialog.FileName);
+                }
+                catch (Exception exception) {
+                    MessageBox.Show("File could not be written:\n" + exception.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                MessageBox.Show("Successfully saved information to " + saveFileDialog.FileName, "Save successful");
+            }
         }
 
         private void spItemListChild_MouseDown(object sender, MouseEventArgs e) {
@@ -221,7 +296,8 @@ namespace InventoryTracker {
             Details detailsPage = new Details {
                 Owner = this,
                 Tag = item.ID,
-                Title = "Details about " + item.Name
+                Title = "Details about " + item.Name,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
             detailsPage.txtName.Text = item.Name;
             detailsPage.txtID.Text = item.ID.ToString();
@@ -235,7 +311,7 @@ namespace InventoryTracker {
             detailsPage.ShowDialog();
         }
 
-        private void spItemListChildButton_Click(object sender, RoutedEventArgs e) {
+        private void spItemListChildAddButton_Click(object sender, RoutedEventArgs e) {
             Button btn = sender as Button;
             Grid itemGrid = VisualTreeHelper.GetParent(btn) as Grid;
             TextBlock qty = itemGrid.Children[2] as TextBlock;
@@ -244,10 +320,27 @@ namespace InventoryTracker {
             // Increase item's quantity
             item.Quantity++;
             qty.Text = item.Quantity.ToString();
-            txtValue.Text = inventory.GetValue().ToString("C");
+            UpdateTotalValue();
 
             // Enable selling
             btnSellItem.IsEnabled = true;
+        }
+
+        private void spItemListChildDelButton_Click(object sender, RoutedEventArgs e) {
+            Button btn = sender as Button;
+            Grid itemGrid = VisualTreeHelper.GetParent(btn) as Grid;
+            Item item = inventory.GetItemFromID((int)itemGrid.Tag);
+
+            MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure you want to delete " + item.Name + "?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes) {
+                inventory.DeleteItem(item);
+
+                // Update visually
+                spItemList.Children.Remove(itemGrid);
+                UpdateItemListColorPattern();
+                UpdateTotalValue();
+                UpdateTotalRevenue();
+            }
         }
     }
 }
