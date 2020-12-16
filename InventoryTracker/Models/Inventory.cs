@@ -7,7 +7,7 @@ using System.IO;
 namespace InventoryTracker.Models {
     public class Inventory {
         ///<summary> List of all items in the inventory. </summary>
-        private List<Item> items = new List<Item>();
+        public List<Item> items = new List<Item>();
 
         ///<summary> Functionality for creating an individual item. </summary>
         public List<Item> CreateItem(Item newItem) {

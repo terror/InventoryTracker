@@ -1,10 +1,18 @@
 ﻿using System;
+<<<<<<< HEAD
+=======
+using System.Collections.Generic;
+using System.IO;
+>>>>>>> 05e5a7e09a5729d9167c59ad78fe892e4b3b7b6e
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+<<<<<<< HEAD
 using System.Collections.Generic;
+=======
+>>>>>>> 05e5a7e09a5729d9167c59ad78fe892e4b3b7b6e
 using InventoryTracker.Models;
 using Microsoft.Win32;
 
@@ -16,6 +24,7 @@ namespace InventoryTracker {
     public partial class MainWindow : Window {
         public Inventory inventory = new Inventory();
         private bool itemGridBGColor1 = true;
+        private string saveLocation;
 
         public MainWindow() {
             InitializeComponent();
@@ -164,8 +173,11 @@ namespace InventoryTracker {
             bool itemGridSellBGColor1 = true;
             foreach (Grid itemGrid in spItemList.Children.OfType<Grid>()) {
                 if (itemGrid.Tag != null && int.Parse(((TextBlock)itemGrid.Children[2]).Text) > 0) {
+<<<<<<< HEAD
                     // Create Grid
                     // IMPORTANT: Tag is used to differentiate each item using their ID
+=======
+>>>>>>> 05e5a7e09a5729d9167c59ad78fe892e4b3b7b6e
                     Grid itemGridSell = new Grid {
                         Tag = itemGrid.Tag,
                         Height = itemGrid.Height
@@ -246,6 +258,7 @@ namespace InventoryTracker {
         }
 
         public void btnLoadItem_Click(object sender, RoutedEventArgs e) {
+<<<<<<< HEAD
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Json file|*.json";
             if (openFileDialog.ShowDialog() == true) {
@@ -272,12 +285,19 @@ namespace InventoryTracker {
                     btnSellItem.IsEnabled = true;
                 }
             }
+=======
+            // var serializer = new JavascriptSerializer();
+            // Load file from specific directory, deserialize string to dict
+            // Loop through JSON and add items to MainWindow
+            throw new NotImplementedException("oof");
+>>>>>>> 05e5a7e09a5729d9167c59ad78fe892e4b3b7b6e
         }
 
         public void btnSaveItem_Click(object sender, RoutedEventArgs e) {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Json file|*.json";
             if (saveFileDialog.ShowDialog() == true) {
+<<<<<<< HEAD
                 try {
                     inventory.SaveToFile(saveFileDialog.FileName);
                 }
@@ -286,6 +306,22 @@ namespace InventoryTracker {
                     return;
                 }
                 MessageBox.Show("Successfully saved information to " + saveFileDialog.FileName, "Save successful");
+=======
+                MessageBox.Show("Saved information to " + saveFileDialog.FileName);
+                saveLocation = saveFileDialog.FileName;
+            }
+            SaveDataToFile();
+            Close();
+        }
+        private void SaveDataToFile() {
+            try {
+                // var serializer = new JavaScriptSerializer();
+                // File.WriteAllLines(serializer.Serialize(inventory.items));
+            }
+            catch (Exception e) {
+                MessageBox.Show(e.Message, "Saving Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+>>>>>>> 05e5a7e09a5729d9167c59ad78fe892e4b3b7b6e
             }
         }
 

@@ -24,7 +24,11 @@ namespace InventoryTracker {
 
         private void btnSell_Click(object sender, RoutedEventArgs e) {
             foreach (Grid gr in spItemList.Children) {
+<<<<<<< HEAD
                 int id = int.Parse(gr.Tag.ToString());
+=======
+                var id = gr.Tag;
+>>>>>>> 05e5a7e09a5729d9167c59ad78fe892e4b3b7b6e
                 foreach (UIElement el in gr.Children) {
                     TextBox itemElement = el as TextBox;
                     if (itemElement == null) continue;
@@ -34,6 +38,7 @@ namespace InventoryTracker {
                     if (int.TryParse(amount, out parsedAmount)) {
                         if (parsedAmount == 0) continue;
 
+<<<<<<< HEAD
                         Item item = mainWindow.inventory.GetItemFromID(id);
 
                         if (parsedAmount > item.Quantity || parsedAmount < 0) {
@@ -55,6 +60,21 @@ namespace InventoryTracker {
                     } else {
                         MessageBox.Show("Quantity must be a valid integer", "Quantity Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
+=======
+                        Item item = mainWindow.inventory.GetItemFromID(int.Parse(id.ToString()));
+
+                        if (parsedAmount > item.Quantity || parsedAmount < 0) {
+                            MessageBox.Show("Quantity must be greater than 0 and the item's current quantity.", "Quantity Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+
+                        item.Quantity -= parsedAmount;
+                        // Update mainwindow here
+
+                    } else { 
+                          MessageBox.Show("Quantity must be a valid integer", "Quantity Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                          return;
+>>>>>>> 05e5a7e09a5729d9167c59ad78fe892e4b3b7b6e
                     }
                 }
             }
