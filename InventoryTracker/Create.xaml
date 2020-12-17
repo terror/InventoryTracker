@@ -6,14 +6,10 @@
         xmlns:local="clr-namespace:InventoryTracker"
         mc:Ignorable="d"
         Title="Create a new item"
-        Icon="/Images/Icon.ico"
         SizeToContent="Height" Width="350"
-        Background="{DynamicResource BackgroundColor}"
-        Foreground="{DynamicResource ForegroundColor}">
-    <Window.Resources>
-        <SolidColorBrush x:Key="BackgroundColor">#1b1b1c</SolidColorBrush>
-        <SolidColorBrush x:Key="ForegroundColor">#d2d2d9</SolidColorBrush>
-    </Window.Resources>
+        WindowStartupLocation="CenterOwner"
+        Style="{StaticResource GeneralWindow}">
+
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -84,8 +80,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Click="btnCreate_Click" Content="Create" MaxWidth="150" Padding="5" Margin="5,0" Grid.Column="0"/>
-            <Button IsCancel="True" Content="Cancel" MaxWidth="150" Padding="5" Margin="5,0" Grid.Column="1"/>
+            <Button Click="btnCreate_Click" Content="Create" MaxWidth="150" Margin="5,0" Grid.Column="0"/>
+            <Button IsCancel="True" Content="Cancel" MaxWidth="150" Margin="5,0" Grid.Column="1"/>
         </Grid>
     </Grid>
 </Window>

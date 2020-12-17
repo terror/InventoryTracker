@@ -99,6 +99,8 @@ namespace InventoryTracker.Models {
                 throw new ArgumentException("Name cannot be empty.");
             if (!double.TryParse(cost_, out double parsedCost) || parsedCost <= 0)
                 throw new ArgumentException("Cost must be a valid double and cannot be less than 0.");
+            if (Math.Round(parsedCost, 2) != parsedCost)
+                throw new ArgumentException("Cost can only have up to two numbers after the decimal point.");
             if (!int.TryParse(optimalQuantity_, out int parsedOptimalQuantity) || parsedOptimalQuantity < 0)
                 throw new ArgumentException("Optimal Quantity a must be a valid integer and >= 0.");
         }

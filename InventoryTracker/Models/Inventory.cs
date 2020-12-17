@@ -9,6 +9,9 @@ namespace InventoryTracker.Models {
         ///<summary> List of all items in the inventory. </summary>
         private List<Item> items = new List<Item>();
 
+        ///<summary> Variable storing all revenue made from items that are no longer in item list. </summary>
+        private double revenueMadeFromDeletedItems = 0;
+
         ///<summary> Functionality for creating an individual item. </summary>
         public List<Item> CreateItem(Item newItem) {
             this.items.Add(newItem);
@@ -17,6 +20,7 @@ namespace InventoryTracker.Models {
 
         ///<summary> Functionality for deleting an individual item form the inventory. </summary>
         public void DeleteItem(Item item) {
+            revenueMadeFromDeletedItems += item.GetRevenue();
             items.Remove(item);
         }
 
@@ -83,7 +87,7 @@ namespace InventoryTracker.Models {
 
         ///<summary> Return cumulative money made from sold items in the inventory. </summary>
         public double GetTotalRevenue() {
-            double totalValue = 0;
+            double totalValue = revenueMadeFromDeletedItems;
             foreach (Item item in items) {
                 totalValue += item.GetRevenue();
             }

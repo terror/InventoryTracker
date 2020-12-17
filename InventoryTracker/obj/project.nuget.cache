@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "iJKdbBR+QuBbt+fYoKw+8SaGPp32OIuxVf9TAQcIdcKDnLcYehrOq16m4dXYHDvpqNGc3IalxtVK+MLPoLB+uA==",
+  "dgSpecHash": "+6vCiwvpjxuHNdIvMtsq5vKqmnPOmvVyyDWMaUERYwbTEIAAyQdXw/W+Br+swXFWA8ysMLgeFWHxBjh+ROfFnw==",
   "success": true,
   "projectFilePath": "C:\\Users\\maxen\\Documents\\GitHub\\InventoryTracker\\InventoryTracker\\InventoryTracker.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\maxen\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\maxen\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
+    "C:\\Users\\maxen\\.nuget\\packages\\system.drawing.common\\5.0.0\\system.drawing.common.5.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

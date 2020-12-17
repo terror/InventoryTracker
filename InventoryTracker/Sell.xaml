@@ -6,17 +6,10 @@
         xmlns:local="clr-namespace:InventoryTracker"
         mc:Ignorable="d"
         Title="Sell items"
-        Icon="/Images/Icon.ico"
         Height="400" Width="600"
-        Background="{DynamicResource BackgroundColor}"
-        Foreground="{DynamicResource ForegroundColor}">
-    <Window.Resources>
-        <SolidColorBrush x:Key="BackgroundColor">#1b1b1c</SolidColorBrush>
-        <SolidColorBrush x:Key="ForegroundColor">#d2d2d9</SolidColorBrush>
-        <SolidColorBrush x:Key="ItemListColor1">#3b3b3c</SolidColorBrush>
-        <SolidColorBrush x:Key="ItemListColor2">#2b2b2c</SolidColorBrush>
-        <SolidColorBrush x:Key="ItemListBGColor">#0b0b0c</SolidColorBrush>
-    </Window.Resources>
+        WindowStartupLocation="CenterOwner"
+        Style="{StaticResource GeneralWindow}">
+    
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -56,8 +49,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Click="btnSell_Click" Content="Sell" MaxWidth="150" Padding="5" Margin="5,0" Grid.Column="0"/>
-            <Button IsCancel="True" Content="Cancel" MaxWidth="150" Padding="5" Margin="5,0" Grid.Column="1"/>
+            <Button Click="btnSell_Click" Content="Sell" MaxWidth="150" Margin="5,0" Grid.Column="0"/>
+            <Button IsCancel="True" Content="Cancel" MaxWidth="150" Margin="5,0" Grid.Column="1"/>
         </Grid>
     </Grid>
 </Window>

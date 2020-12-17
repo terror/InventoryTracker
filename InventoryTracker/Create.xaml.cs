@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Media;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,9 +19,11 @@ namespace InventoryTracker
     /// Interaction logic for Create.xaml
     /// </summary>
     public partial class Create : Window {
-        MainWindow mainWindow = ((MainWindow)Application.Current.MainWindow);
+        MainWindow mainWindow;
 
-        public Create() {
+        public Create(MainWindow mainWindow_) {
+            mainWindow = mainWindow_;
+            Owner = mainWindow;
             InitializeComponent();
             txtName.Text = "Item #" + Item.NewestID();
         }
@@ -30,7 +34,7 @@ namespace InventoryTracker
                 Item.CheckProperties(txtName.Text, txtCost.Text, txtOptimalQuantity.Text);
             }
             catch (Exception error) {
-                MessageBox.Show(error.Message, "Item Property Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                new CustomMessageBox(this, error.Message, "Item Property Error", SystemIcons.Error, SystemSounds.Hand).ShowDialog();
                 return;
             }
             Item item = new Item(txtName.Text, double.Parse(txtCost.Text), int.Parse(txtOptimalQuantity.Text), txtCategory.Text, txtSupplier.Text, txtLocation.Text);

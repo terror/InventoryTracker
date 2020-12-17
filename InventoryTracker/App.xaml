@@ -4,6 +4,79 @@
              xmlns:local="clr-namespace:InventoryTracker"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <!-- Colors -->
+            <SolidColorBrush x:Key="BackgroundColor">#1b1b1c</SolidColorBrush>
+            <SolidColorBrush x:Key="ForegroundColor">#d2d2d9</SolidColorBrush>
+            <SolidColorBrush x:Key="ItemListColor1">#3b3b3c</SolidColorBrush>
+            <SolidColorBrush x:Key="ItemListColor2">#2b2b2c</SolidColorBrush>
+            <SolidColorBrush x:Key="ItemListBGColor">#0b0b0c</SolidColorBrush>
+            <SolidColorBrush x:Key="HoverBGColor">#bee6fd</SolidColorBrush>
+            <SolidColorBrush x:Key="DisabledBGColor">#a2a2a9</SolidColorBrush>
+            <SolidColorBrush x:Key="DisabledFGColor">#4b4b49</SolidColorBrush>
+
+            <!-- Explicit Window Style -->
+            <Style TargetType="Window" x:Key="GeneralWindow">
+                <Setter Property="Icon" Value="/Images/Icon.ico"/>
+                <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource ForegroundColor}"/>
+            </Style>
+
+            <!-- Implicit Button Style -->
+            <Style TargetType="Button">
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="Background" Value="{StaticResource ForegroundColor}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource BackgroundColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource BackgroundColor}"/>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Background="{TemplateBinding Background}">
+                                <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Background" Value="{StaticResource DisabledBGColor}"/>
+                        <Setter Property="Foreground" Value="{StaticResource DisabledFGColor}"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource HoverBGColor}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!-- Explicit Style for Delete Button -->
+            <Style TargetType="Image" x:Key="DeleteButtonImage">
+                <Setter Property="Source" Value="/Images/TrashIcon.png"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Source" Value="/Images/TrashIconFocus.png"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="Button" x:Key="DeleteButton">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Background="{TemplateBinding Background}">
+                                <ContentPresenter>
+                                    <ContentPresenter.Content>
+                                        <Image Style="{StaticResource DeleteButtonImage}"/>
+                                    </ContentPresenter.Content>
+                                </ContentPresenter>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

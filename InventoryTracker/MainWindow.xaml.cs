@@ -5,9 +5,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Collections.Generic;
+using System.Drawing;
 using InventoryTracker.Models;
 using Microsoft.Win32;
-
+using System.Media;
 
 namespace InventoryTracker {
     /// <summary>
@@ -34,36 +35,25 @@ namespace InventoryTracker {
             };
             itemGrid.MouseDown += new MouseButtonEventHandler(spItemListChild_MouseDown);
             if (itemGridBGColor1) {
-                itemGrid.Background = (Brush)FindResource("ItemListColor1");
+                itemGrid.Background = (System.Windows.Media.Brush)FindResource("ItemListColor1");
                 itemGridBGColor1 = false;
             } else {
-                itemGrid.Background = (Brush)FindResource("ItemListColor2");
+                itemGrid.Background = (System.Windows.Media.Brush)FindResource("ItemListColor2");
                 itemGridBGColor1 = true;
             }
 
             // Define Columns
-            ColumnDefinition colDef1 = new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) };
-            ColumnDefinition colDef2 = new ColumnDefinition();
-            ColumnDefinition colDef3 = new ColumnDefinition { Width = new GridLength(20, GridUnitType.Pixel) };
-            ColumnDefinition colDef4 = new ColumnDefinition { Width = GridLength.Auto };
-            ColumnDefinition colDef5 = new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) };
-            ColumnDefinition colDef6 = new ColumnDefinition { Width = GridLength.Auto };
-            ColumnDefinition colDef7 = new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) };
-            ColumnDefinition colDef8 = new ColumnDefinition { Width = new GridLength(40, GridUnitType.Pixel) };
-            ColumnDefinition colDef9 = new ColumnDefinition { Width = new GridLength(5, GridUnitType.Pixel) };
-            ColumnDefinition colDef10 = new ColumnDefinition { Width = new GridLength(45, GridUnitType.Pixel) };
-            ColumnDefinition colDef11 = new ColumnDefinition { Width = new GridLength(5, GridUnitType.Pixel) };
-            itemGrid.ColumnDefinitions.Add(colDef1);
-            itemGrid.ColumnDefinitions.Add(colDef2);
-            itemGrid.ColumnDefinitions.Add(colDef3);
-            itemGrid.ColumnDefinitions.Add(colDef4);
-            itemGrid.ColumnDefinitions.Add(colDef5);
-            itemGrid.ColumnDefinitions.Add(colDef6);
-            itemGrid.ColumnDefinitions.Add(colDef7);
-            itemGrid.ColumnDefinitions.Add(colDef8);
-            itemGrid.ColumnDefinitions.Add(colDef9);
-            itemGrid.ColumnDefinitions.Add(colDef10);
-            itemGrid.ColumnDefinitions.Add(colDef11);
+            itemGrid.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) } );
+            itemGrid.ColumnDefinitions.Add( new ColumnDefinition() );
+            itemGrid.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(20, GridUnitType.Pixel) } );
+            itemGrid.ColumnDefinitions.Add( new ColumnDefinition { Width = GridLength.Auto } );
+            itemGrid.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) } );
+            itemGrid.ColumnDefinitions.Add( new ColumnDefinition { Width = GridLength.Auto } );
+            itemGrid.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) } );
+            itemGrid.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(40, GridUnitType.Pixel) } );
+            itemGrid.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(5, GridUnitType.Pixel) } );
+            itemGrid.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(45, GridUnitType.Pixel) } );
+            itemGrid.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(5, GridUnitType.Pixel) } );
 
             // Add TextBlocks and Buttons
             TextBlock txt1 = new TextBlock {
@@ -94,9 +84,8 @@ namespace InventoryTracker {
 
             Button btn1 = new Button {
                 Content = "➕",
-                Foreground = (Brush)FindResource("BackgroundColor"),
+                Foreground = (System.Windows.Media.Brush)FindResource("BackgroundColor"),
                 VerticalAlignment = VerticalAlignment.Center,
-                Padding = new Thickness(5),
                 Margin = new Thickness(5)
             };
             Grid.SetColumn(btn1, 7);
@@ -104,10 +93,7 @@ namespace InventoryTracker {
             itemGrid.Children.Add(btn1);
 
             Button btn2 = new Button {
-                Style = (Style)FindResource("DeleteButton"),
-                Content = new Image {
-                    Style = (Style)FindResource("DeleteButtonImage")
-                }
+                Style = (Style)FindResource("DeleteButton")
             };
             Grid.SetColumn(btn2, 9);
             btn2.Click += new RoutedEventHandler(spItemListChildDelButton_Click);
@@ -129,10 +115,10 @@ namespace InventoryTracker {
             itemGridBGColor1 = true;
             foreach (Grid itemGrid in spItemList.Children.OfType<Grid>()) {
                 if (itemGridBGColor1) {
-                    itemGrid.Background = (Brush)FindResource("ItemListColor1");
+                    itemGrid.Background = (System.Windows.Media.Brush)FindResource("ItemListColor1");
                     itemGridBGColor1 = false;
                 } else {
-                    itemGrid.Background = (Brush)FindResource("ItemListColor2");
+                    itemGrid.Background = (System.Windows.Media.Brush)FindResource("ItemListColor2");
                     itemGridBGColor1 = true;
                 }
             }
@@ -147,18 +133,11 @@ namespace InventoryTracker {
         }
 
         public void btnCreateItem_Click(object sender, RoutedEventArgs e) {
-            Create createPage = new Create {
-                Owner = this,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-            };
-            createPage.ShowDialog();
+            new Create(this).ShowDialog();
         }
 
         public void btnSellItem_Click(object sender, RoutedEventArgs e) {
-            Sell sellPage = new Sell {
-                Owner = this,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-            };
+            Sell sellPage = new Sell(this);
 
             // Copy Grids from Main Window for items in stock (Quantity > 0)
             bool itemGridSellBGColor1 = true;
@@ -172,32 +151,23 @@ namespace InventoryTracker {
                     };
                     // No need to dynamically update the background for this StackPanel since items cannot be deleted from the list.
                     if (itemGridSellBGColor1) {
-                        itemGridSell.Background = (Brush)sellPage.FindResource("ItemListColor1");
+                        itemGridSell.Background = (System.Windows.Media.Brush)sellPage.FindResource("ItemListColor1");
                         itemGridSellBGColor1 = false;
                     } else {
-                        itemGridSell.Background = (Brush)sellPage.FindResource("ItemListColor2");
+                        itemGridSell.Background = (System.Windows.Media.Brush)sellPage.FindResource("ItemListColor2");
                         itemGridSellBGColor1 = true;
                     }
 
                     // Define Columns
-                    ColumnDefinition colDef1 = new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) };
-                    ColumnDefinition colDef2 = new ColumnDefinition();
-                    ColumnDefinition colDef3 = new ColumnDefinition { Width = new GridLength(20, GridUnitType.Pixel) };
-                    ColumnDefinition colDef4 = new ColumnDefinition { Width = GridLength.Auto };
-                    ColumnDefinition colDef5 = new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) };
-                    ColumnDefinition colDef6 = new ColumnDefinition { MinWidth = 25, Width = GridLength.Auto };
-                    ColumnDefinition colDef7 = new ColumnDefinition { Width = new GridLength(5, GridUnitType.Pixel) };
-                    ColumnDefinition colDef8 = new ColumnDefinition { Width = GridLength.Auto };
-                    ColumnDefinition colDef9 = new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) };
-                    itemGridSell.ColumnDefinitions.Add(colDef1);
-                    itemGridSell.ColumnDefinitions.Add(colDef2);
-                    itemGridSell.ColumnDefinitions.Add(colDef3);
-                    itemGridSell.ColumnDefinitions.Add(colDef4);
-                    itemGridSell.ColumnDefinitions.Add(colDef5);
-                    itemGridSell.ColumnDefinitions.Add(colDef6);
-                    itemGridSell.ColumnDefinitions.Add(colDef7);
-                    itemGridSell.ColumnDefinitions.Add(colDef8);
-                    itemGridSell.ColumnDefinitions.Add(colDef9);
+                    itemGridSell.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) } );
+                    itemGridSell.ColumnDefinitions.Add( new ColumnDefinition() );
+                    itemGridSell.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(20, GridUnitType.Pixel) } );
+                    itemGridSell.ColumnDefinitions.Add( new ColumnDefinition { Width = GridLength.Auto } );
+                    itemGridSell.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) } );
+                    itemGridSell.ColumnDefinitions.Add( new ColumnDefinition { MinWidth = 25, Width = GridLength.Auto } );
+                    itemGridSell.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(5, GridUnitType.Pixel) } );
+                    itemGridSell.ColumnDefinitions.Add( new ColumnDefinition { Width = GridLength.Auto } );
+                    itemGridSell.ColumnDefinitions.Add( new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) } );
 
                     // Add TextBlocks and TextBox
                     TextBlock txt1 = new TextBlock {
@@ -237,12 +207,13 @@ namespace InventoryTracker {
                     sellPage.spItemList.Children.Add(itemGridSell);
                 }
             }
+
             sellPage.ShowDialog();
         }
 
         public void btnReportItem_Click(object sender, RoutedEventArgs e) {
             string report = inventory.GenerateReport();
-            MessageBox.Show(report, "Item Report", MessageBoxButton.OK);
+            new CustomMessageBox(this, report, "Item Report").ShowDialog();
         }
 
         public void btnLoadItem_Click(object sender, RoutedEventArgs e) {
@@ -254,10 +225,10 @@ namespace InventoryTracker {
                     itemList = inventory.LoadFromFile(openFileDialog.FileName);
                 }
                 catch (Exception exception) {
-                    MessageBox.Show("File could not be read:\n" + exception.Message, "Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    new CustomMessageBox(this, "File could not be read:\n" + exception.Message, "Load Error", SystemIcons.Error, SystemSounds.Hand).ShowDialog();
                     return;
                 }
-                MessageBox.Show("Successfully loaded information from " + openFileDialog.FileName, "Load successful");
+                new CustomMessageBox(this, "Successfully loaded information from " + openFileDialog.FileName, "Load successful").ShowDialog();
 
                 // Update MainWindow
                 spItemList.Children.Clear();
@@ -282,10 +253,10 @@ namespace InventoryTracker {
                     inventory.SaveToFile(saveFileDialog.FileName);
                 }
                 catch (Exception exception) {
-                    MessageBox.Show("File could not be written:\n" + exception.Message, "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    new CustomMessageBox(this, "File could not be written:\n" + exception.Message, "Save Error", SystemIcons.Error, SystemSounds.Hand).ShowDialog();
                     return;
                 }
-                MessageBox.Show("Successfully saved information to " + saveFileDialog.FileName, "Save successful");
+                new CustomMessageBox(this, "Successfully saved information to " + saveFileDialog.FileName, "Save successful").ShowDialog();
             }
         }
 
@@ -293,12 +264,7 @@ namespace InventoryTracker {
             Grid itemGrid = sender as Grid;
             Item item = inventory.GetItemFromID((int)itemGrid.Tag);
 
-            Details detailsPage = new Details {
-                Owner = this,
-                Tag = item.ID,
-                Title = "Details about " + item.Name,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-            };
+            Details detailsPage = new Details(this, item.ID.ToString(), "Details about " + item.Name);
             detailsPage.txtName.Text = item.Name;
             detailsPage.txtID.Text = item.ID.ToString();
             detailsPage.txtCost.Text = item.Cost.ToString();
@@ -331,7 +297,9 @@ namespace InventoryTracker {
             Grid itemGrid = VisualTreeHelper.GetParent(btn) as Grid;
             Item item = inventory.GetItemFromID((int)itemGrid.Tag);
 
-            MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure you want to delete " + item.Name + "?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+            new CustomMessageBox(this, "Are you sure you want to delete " + item.Name + "?", "Delete Confirmation", SystemIcons.Warning, SystemSounds.Exclamation, false).ShowDialog();
+
+            /*
             if (messageBoxResult == MessageBoxResult.Yes) {
                 inventory.DeleteItem(item);
 
@@ -340,7 +308,18 @@ namespace InventoryTracker {
                 UpdateItemListColorPattern();
                 UpdateTotalValue();
                 UpdateTotalRevenue();
-            }
+                if (inventory.IsEmpty()) {
+                    btnSellItem.IsEnabled = false;
+                }
+            }*/
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+
+            // if not empty and not justsaved
+            
+            // use exit...
+            //Error errorPage = new CustomMessageBox(this, "Unsaved Changes", "You have unsaved changes! If you close this application all data will be lost.\nAre you sure you want to leave?");
         }
     }
 }

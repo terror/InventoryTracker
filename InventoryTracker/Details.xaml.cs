@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Media;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,9 +18,13 @@ namespace InventoryTracker {
     /// Interaction logic for Details.xaml
     /// </summary>
     public partial class Details : Window {
-        MainWindow mainWindow = ((MainWindow)Application.Current.MainWindow);
+        MainWindow mainWindow;
 
-        public Details() {
+        public Details(MainWindow mainWindow_, string tag, string title) {
+            mainWindow = mainWindow_;
+            Owner = mainWindow;
+            Tag = tag;
+            Title = title;
             InitializeComponent();
         }
 
@@ -28,7 +34,7 @@ namespace InventoryTracker {
                 Item.CheckProperties(txtName.Text, txtCost.Text, txtOptimalQuantity.Text);
             }
             catch (Exception error) {
-                MessageBox.Show(error.Message, "Item Property Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                new CustomMessageBox(this, error.Message, "Item Property Error", SystemIcons.Error, SystemSounds.Hand).ShowDialog();
                 return;
             }
             Item item = mainWindow.inventory.GetItemFromID((int)Tag);
