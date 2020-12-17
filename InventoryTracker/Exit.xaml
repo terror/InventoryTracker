@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InventoryTracker"
         mc:Ignorable="d"
+        Title="Unsaved Changes"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource GeneralWindow}">
-    <Grid x:Name="grdMain" Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <TextBlock x:Name="txtMessage" TextWrapping="Wrap" MinWidth="300" MaxWidth="500" Grid.Row="0"/>
-        <Button Content="OK" IsCancel="True" MaxWidth="50" Grid.Row="3"/>
-    </Grid>
+    <StackPanel Margin="20">
+        <TextBlock x:Name="txtMessage" TextWrapping="Wrap" MinWidth="300" MaxWidth="500"/>
+        <Button>
+            <Grid>
+                
+                <Image Source="/Images/Save.png"/>
+            </Grid>
+        </Button>
+    </StackPanel>
 </Window>

@@ -20,10 +20,9 @@ namespace InventoryTracker {
     /// Interaction logic for CustomMessageBox.xaml
     /// </summary>
     public partial class CustomMessageBox : Window {
-        /*static Show() {
-            new CustomMessageBox
-        }*/
-        
+
+        public bool clickedYes = false;
+
         public CustomMessageBox(Window window, string message, string title, bool isOK = true) {
             Owner = window;
             Title = title;
@@ -53,10 +52,12 @@ namespace InventoryTracker {
         }
 
         private void btnYes_Click(object sender, RoutedEventArgs e) {
-            
+            clickedYes = true;
+            Close();
         }
 
         // Conversion code made by 'Kenan E. K.' from Stack Overflow
+        // https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource/38190733
         private static ImageSource ConvertIconToImage(Icon icon) {
             Bitmap bitmap = icon.ToBitmap();
             IntPtr hBitmap = bitmap.GetHbitmap();

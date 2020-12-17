@@ -60,7 +60,7 @@
 
             <!-- Quantity -->
             <TextBlock Text="Current Quantity:" HorizontalAlignment="Right" Grid.Row="4" Grid.Column="0"/>
-            <TextBox x:Name="txtQuantity" IsEnabled="False" Grid.Row="4" Grid.Column="2"/>
+            <TextBox x:Name="txtQuantity" Grid.Row="4" Grid.Column="2"/>
 
             <!-- Supplier -->
             <TextBlock Text="Supplier:" HorizontalAlignment="Right" Grid.Row="4" Grid.Column="4"/>

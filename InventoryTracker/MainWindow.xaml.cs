@@ -22,8 +22,10 @@ namespace InventoryTracker {
             InitializeComponent();
 
             // Set Sort Combobox
-            cmbSortOptions.ItemsSource = new string[] { "ID", "Name", "Quantity", "Cost", "Category", "Supplier" };
+            cmbSortOptions.ItemsSource = new string[] { "ID", "Name", "Quantity", "Cost", "Optimal Quantity" };
             cmbSortOptions.SelectedIndex = 0;
+            cmbSortOrder.ItemsSource = new string[] { "Ascending", "Descending" };
+            cmbSortOrder.SelectedIndex = 0;
         }
 
         public void AddItemToWindow(Item item) {
@@ -99,7 +101,7 @@ namespace InventoryTracker {
             btn2.Click += new RoutedEventHandler(spItemListChildDelButton_Click);
             itemGrid.Children.Add(btn2);
 
-            // Add to StackPanel -- IF DATA IS SORTED BY ANYTHING ASIDE FROM ID AND QUANTITY, WILL NEED TO SORT AGAIN
+            // Add to StackPanel
             spItemList.Children.Add(itemGrid);
         }
 
@@ -113,6 +115,7 @@ namespace InventoryTracker {
 
         public void UpdateItemListColorPattern() {
             itemGridBGColor1 = true;
+
             foreach (Grid itemGrid in spItemList.Children.OfType<Grid>()) {
                 if (itemGridBGColor1) {
                     itemGrid.Background = (System.Windows.Media.Brush)FindResource("ItemListColor1");
@@ -216,25 +219,48 @@ namespace InventoryTracker {
             new CustomMessageBox(this, report, "Item Report").ShowDialog();
         }
 
+        public void btnAnalysisItem_Click(object sender, RoutedEventArgs e) {
+            string quantity = inventory.QuantityAnalysis();
+            new CustomMessageBox(this, quantity, "Quantity Analysis").ShowDialog();
+        }
+
+        public void btnResetItem_Click(object sender, RoutedEventArgs e) {
+            // Warn first
+            CustomMessageBox messageBox = new CustomMessageBox(this, "Are you sure you want to reset the entire inventory?\nThis action cannot be reverted.",
+                "Reset Confirmation", SystemIcons.Warning, SystemSounds.Exclamation, false);
+            messageBox.ShowDialog();
+
+            if (messageBox.clickedYes) {
+                inventory.Reset();
+                spItemList.Children.Clear();
+                UpdateTotalValue();
+                UpdateTotalRevenue();
+            }
+        }
+
+        private void ReloadItemList(List<Item> items) {
+            spItemList.Children.Clear();
+            foreach (Item item in items) {
+                AddItemToWindow(item);
+            }
+        }
+
         public void btnLoadItem_Click(object sender, RoutedEventArgs e) {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Json file|*.json";
             if (openFileDialog.ShowDialog() == true) {
-                List<Item> itemList;
+                List<Item> items;
                 try {
-                    itemList = inventory.LoadFromFile(openFileDialog.FileName);
+                    items = inventory.LoadFromFile(openFileDialog.FileName);
                 }
                 catch (Exception exception) {
-                    new CustomMessageBox(this, "File could not be read:\n" + exception.Message, "Load Error", SystemIcons.Error, SystemSounds.Hand).ShowDialog();
+                    new CustomMessageBox(this, "File could not be read:\n" + exception.Message, 
+                        "Load Error", SystemIcons.Error, SystemSounds.Hand).ShowDialog();
                     return;
                 }
                 new CustomMessageBox(this, "Successfully loaded information from " + openFileDialog.FileName, "Load successful").ShowDialog();
 
-                // Update MainWindow
-                spItemList.Children.Clear();
-                foreach (Item item in itemList) {
-                    AddItemToWindow(item);
-                }
+                ReloadItemList(items);
                 UpdateTotalValue();
                 UpdateTotalRevenue();
                 if (inventory.IsEmpty()) {
@@ -253,7 +279,8 @@ namespace InventoryTracker {
                     inventory.SaveToFile(saveFileDialog.FileName);
                 }
                 catch (Exception exception) {
-                    new CustomMessageBox(this, "File could not be written:\n" + exception.Message, "Save Error", SystemIcons.Error, SystemSounds.Hand).ShowDialog();
+                    new CustomMessageBox(this, "File could not be written:\n" + exception.Message, 
+                        "Save Error", SystemIcons.Error, SystemSounds.Hand).ShowDialog();
                     return;
                 }
                 new CustomMessageBox(this, "Successfully saved information to " + saveFileDialog.FileName, "Save successful").ShowDialog();
@@ -291,27 +318,59 @@ namespace InventoryTracker {
             // Enable selling
             btnSellItem.IsEnabled = true;
         }
+         
 
         private void spItemListChildDelButton_Click(object sender, RoutedEventArgs e) {
             Button btn = sender as Button;
             Grid itemGrid = VisualTreeHelper.GetParent(btn) as Grid;
             Item item = inventory.GetItemFromID((int)itemGrid.Tag);
 
-            new CustomMessageBox(this, "Are you sure you want to delete " + item.Name + "?", "Delete Confirmation", SystemIcons.Warning, SystemSounds.Exclamation, false).ShowDialog();
+            // Warn first
+            CustomMessageBox messageBox = new CustomMessageBox(this, "Are you sure you want to delete " + item.Name + "?", 
+                "Delete Confirmation", SystemIcons.Warning, SystemSounds.Exclamation, false);
+            messageBox.ShowDialog();
 
-            /*
-            if (messageBoxResult == MessageBoxResult.Yes) {
+            if (messageBox.clickedYes) {
                 inventory.DeleteItem(item);
-
+         
                 // Update visually
                 spItemList.Children.Remove(itemGrid);
                 UpdateItemListColorPattern();
                 UpdateTotalValue();
                 UpdateTotalRevenue();
-                if (inventory.IsEmpty()) {
+                if (inventory.IsEmpty()) {      
                     btnSellItem.IsEnabled = false;
                 }
-            }*/
+            }
+        }
+
+        private void btnSort_Click(object sender, RoutedEventArgs e) {
+            bool ascending = true;
+            if (cmbSortOrder.SelectedIndex == 1) {
+                ascending = false;
+            }
+
+            List<Item> items;
+            switch (cmbSortOptions.SelectedIndex) {
+                case 0: // ID
+                    items = inventory.SortItems(ascending, x => x.ID);
+                    break;
+                case 1: // Name
+                    items = inventory.SortItems(ascending, x => x.Name);
+                    break;
+                case 2: // Quantity
+                    items = inventory.SortItems(ascending, x => x.Quantity);
+                    break;
+                case 3: // Cost
+                    items = inventory.SortItems(ascending, x => x.Cost);
+                    break;
+                case 4: // Optimal Quantity
+                    items = inventory.SortItems(ascending, x => x.OptimalQuantity);
+                    break;
+                default:
+                    return;
+            }
+            ReloadItemList(items);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {

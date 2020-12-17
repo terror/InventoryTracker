@@ -31,20 +31,26 @@ namespace InventoryTracker {
         private void btnEdit_Click(object sender, RoutedEventArgs e) {
             // Validate fields and update item properties
             try {
-                Item.CheckProperties(txtName.Text, txtCost.Text, txtOptimalQuantity.Text);
+                Item.CheckProperties(txtName.Text, txtCost.Text, txtOptimalQuantity.Text, txtQuantity.Text);
             }
             catch (Exception error) {
                 new CustomMessageBox(this, error.Message, "Item Property Error", SystemIcons.Error, SystemSounds.Hand).ShowDialog();
                 return;
             }
-            Item item = mainWindow.inventory.GetItemFromID((int)Tag);
-            item.UpdateDetails(txtName.Text, double.Parse(txtCost.Text), int.Parse(txtOptimalQuantity.Text), txtCategory.Text, txtSupplier.Text, txtLocation.Text);
+            Item item = mainWindow.inventory.GetItemFromID(int.Parse(Tag.ToString()));
+            item.UpdateDetails(txtName.Text, double.Parse(txtCost.Text), int.Parse(txtOptimalQuantity.Text), txtCategory.Text, txtSupplier.Text, txtLocation.Text, int.Parse(txtQuantity.Text));
 
-            // Update main window -- IF DATA IS SORTED BY ANYTHING ASIDE FROM ID AND QUANTITY, WILL NEED TO SORT AGAIN
+            // Update main window
             Grid itemGrid = mainWindow.GetGridForItem(item.ID);
             TextBlock itemNameTextBlock = itemGrid.Children[0] as TextBlock;
             itemNameTextBlock.Text = item.Name;
             mainWindow.UpdateTotalValue();
+            ((TextBlock)itemGrid.Children[2]).Text = item.Quantity.ToString();
+            if (mainWindow.inventory.IsEmpty()) {
+                mainWindow.btnSellItem.IsEnabled = false;
+            } else {
+                mainWindow.btnSellItem.IsEnabled = true;
+            }
 
             Close();
         }

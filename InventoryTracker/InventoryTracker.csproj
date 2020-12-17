@@ -10,6 +10,7 @@
     <None Remove="Images\Icon.ico" />
     <None Remove="Images\TrashIcon.png" />
     <None Remove="Images\TrashIconFocus.png" />
+    <None Remove="Models\NewFile1.txt" />
   </ItemGroup>
 
   <ItemGroup>

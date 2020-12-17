@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using System.IO;
+using System.Linq;
 
 namespace InventoryTracker.Models {
     public class Inventory {
@@ -42,7 +43,7 @@ namespace InventoryTracker.Models {
             File.WriteAllText(fileLocation, JsonSerializer.Serialize(items));
         }
 
-        ///<summary> Returns a general report as string </summary>
+        ///<summary> Returns a general report as a string </summary>
         public string GenerateReport() {
             StringBuilder sb = new StringBuilder();
 
@@ -55,15 +56,20 @@ namespace InventoryTracker.Models {
                ));
             }
 
-            sb.AppendLine("\n--- Shopping List ---");
+            sb.AppendLine(string.Format("\nTotal Value: {0:c}\n", GetTotalValue()));
+            sb.AppendLine(string.Format("Revenue: {0:c}", GetTotalRevenue()));
+
+            return sb.ToString();
+        }
+
+        ///<summary> Returns a quantitative analysis report as a string </summary>
+        public string QuantityAnalysis() {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("\n--- Quantity Analysis ---");
             for (int i = 0; i < this.items.Count; ++i) {
                 if (items[i].Quantity < items[i].OptimalQuantity)
                     sb.AppendLine(string.Format("Item: {0}, Quantity: {1}, Optimal Quantity: {2} \n", items[i].Name, items[i].Quantity, items[i].OptimalQuantity));
             }
-
-            sb.AppendLine(string.Format("\nTotal Value: {0:c}\n", GetTotalValue()));
-            sb.AppendLine(string.Format("Revenue: {0:c}", GetTotalRevenue()));
-
             return sb.ToString();
         }
 
@@ -102,6 +108,11 @@ namespace InventoryTracker.Models {
                 }
             }
             return true;
+        }
+
+        ///<summary> Merge sort inventory items and return them </summary>
+        public List<Item> SortItems(bool asc, Func<Item, IComparable> getProp) {
+            return asc ? Sorter.sort(items, getProp) : Sorter.sortDesc(items, getProp);
         }
     }
 }

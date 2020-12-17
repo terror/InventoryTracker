@@ -64,13 +64,14 @@ namespace InventoryTracker.Models {
             set { location = string.IsNullOrWhiteSpace(value) ? "N/A" : value; }
         }
 
-        public void UpdateDetails(string name_, double cost_, int optimalQuantity_, string category_, string supplier_, string location_) {
+        public void UpdateDetails(string name_, double cost_, int optimalQuantity_, string category_, string supplier_, string location_, int quantity_) {
             Name = name_;
             Cost = cost_;
             OptimalQuantity = optimalQuantity_;
             Category = category_;
             Supplier = supplier_;
             Location = location_;
+            Quantity = quantity_;
         }
 
         public void Sell(int amount) {
@@ -97,12 +98,25 @@ namespace InventoryTracker.Models {
         public static void CheckProperties(string name_, string cost_, string optimalQuantity_) {
             if (string.IsNullOrWhiteSpace(name_))
                 throw new ArgumentException("Name cannot be empty.");
-            if (!double.TryParse(cost_, out double parsedCost) || parsedCost <= 0)
+            if (!double.TryParse(cost_, out double parsedCost) || parsedCost < 0)
                 throw new ArgumentException("Cost must be a valid double and cannot be less than 0.");
             if (Math.Round(parsedCost, 2) != parsedCost)
                 throw new ArgumentException("Cost can only have up to two numbers after the decimal point.");
             if (!int.TryParse(optimalQuantity_, out int parsedOptimalQuantity) || parsedOptimalQuantity < 0)
                 throw new ArgumentException("Optimal Quantity a must be a valid integer and >= 0.");
+        }
+
+        public static void CheckProperties(string name_, string cost_, string optimalQuantity_, string quantity_) {
+            if (string.IsNullOrWhiteSpace(name_))
+                throw new ArgumentException("Name cannot be empty.");
+            if (!double.TryParse(cost_, out double parsedCost) || parsedCost < 0)
+                throw new ArgumentException("Cost must be a valid double and cannot be less than 0.");
+            if (Math.Round(parsedCost, 2) != parsedCost)
+                throw new ArgumentException("Cost can only have up to two numbers after the decimal point.");
+            if (!int.TryParse(optimalQuantity_, out int parsedOptimalQuantity) || parsedOptimalQuantity < 0)
+                throw new ArgumentException("Optimal Quantity a must be a valid integer and cannot be less than 0.");
+            if (!int.TryParse(quantity_, out int parsedQuantity) || parsedQuantity < 0)
+                throw new ArgumentException("Quantity must be a valid integer and cannot be less than 0.");
         }
     }
 }

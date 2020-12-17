@@ -41,7 +41,7 @@
                 </Setter>
                 <Style.Triggers>
                     <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Background" Value="{StaticResource DisabledBGColor}"/>
+                        <!--<Setter Property="Background" Value="{StaticResource DisabledBGColor}"/>-->
                         <Setter Property="Foreground" Value="{StaticResource DisabledFGColor}"/>
                     </Trigger>
                     <Trigger Property="IsMouseOver" Value="True">
