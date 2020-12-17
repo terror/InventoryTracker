@@ -1,6 +1,7 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,29 +18,28 @@ namespace InventoryTracker {
     /// Interaction logic for Exit.xaml
     /// </summary>
     public partial class Exit : Window {
-        public Exit() {
+        public bool clickedSave = false;
+        public bool willClose = true;
+
+        public Exit(Window window) {
+            Owner = window;
+            Icon = CustomMessageBox.ConvertIconToImage(SystemIcons.Warning);
+            SystemSounds.Exclamation.Play();
             InitializeComponent();
         }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e) {
+            clickedSave = true;
+            Close();
+        }
+
+        private void btnDontSave_Click(object sender, RoutedEventArgs e) {
+            Close();
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e) {
+            willClose = false;
+            Close();
+        }
     }
-
-    /*
-        public Error(MainWindow mainWindow_, string title, string message, params string[] options) {
-            mainWindow = mainWindow_;
-            Owner = mainWindow;
-            Title = title;
-            txtMessage.Text = message;
-            for (int i = 0; i < options.Length; i++) {
-
-                grdMain.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(10, GridUnitType.Pixel) });
-                grdMain.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-                Button btn = new Button { Content = options[i] };
-                Grid.SetRow(btn, 3);
-                Grid.SetColumn(btn, i * 2);
-                grdMain.Children.Add(btn);
-
-            }
-            InitializeComponent();
-            
-        } 
-        */
 }

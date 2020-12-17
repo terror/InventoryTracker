@@ -48,7 +48,7 @@
             </StackPanel>
 
             <!-- Item List -->
-            <ScrollViewer Tag="0" Margin="20,10,20,20" Grid.Row="2">
+            <ScrollViewer Tag="0" VerticalScrollBarVisibility="Auto" Margin="20,10,20,20" Grid.Row="2">
                 <StackPanel x:Name="spItemList" Background="{StaticResource ItemListBGColor}">
                     <!--
                     This is a sample grid. It previews what a grid will look like in the StackPanel.

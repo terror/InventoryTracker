@@ -10,12 +10,31 @@
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource GeneralWindow}">
     <StackPanel Margin="20">
-        <TextBlock x:Name="txtMessage" TextWrapping="Wrap" MinWidth="300" MaxWidth="500"/>
-        <Button>
-            <Grid>
-                
-                <Image Source="/Images/Save.png"/>
-            </Grid>
+        <StackPanel Margin="0,0,0,20">
+            <TextBlock Text="Your inventory has unsaved changes!" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="If you close this application all data will be lost."/>
+            <TextBlock Text="What would you like to do?"/>
+        </StackPanel>
+        <Button Click="btnSave_Click" Style="{StaticResource ExitOptionButton}" BorderBrush="{StaticResource HoverBGColor}">
+            <DockPanel>
+                <Image Source="/Images/SaveIcon.png" Margin="0,0,10,0" DockPanel.Dock="Left"/>
+                <TextBlock Text="Save and Quit" FontSize="18" FontWeight="Bold" DockPanel.Dock="Top"/>
+                <TextBlock Text="Save your changes, then close the application." VerticalAlignment="Center" DockPanel.Dock="Bottom"/>
+            </DockPanel>
+        </Button>
+        <Button Click="btnDontSave_Click" Style="{StaticResource ExitOptionButton}">
+            <DockPanel>
+                <Image Source="/Images/DontSaveIcon.png" Margin="0,0,10,0" DockPanel.Dock="Left"/>
+                <TextBlock Text="Quit without Saving" FontSize="18" FontWeight="Bold" DockPanel.Dock="Top"/>
+                <TextBlock Text="Close the application without saving your changes." VerticalAlignment="Center" DockPanel.Dock="Bottom"/>
+            </DockPanel>
+        </Button>
+        <Button Click="btnCancel_Click" Style="{StaticResource ExitOptionButton}">
+            <DockPanel>
+                <Image Source="/Images/CancelIcon.png" Margin="0,0,10,0" DockPanel.Dock="Left"/>
+                <TextBlock Text="Cancel" FontSize="18" FontWeight="Bold" DockPanel.Dock="Top"/>
+                <TextBlock Text="Go back to the application." VerticalAlignment="Center" DockPanel.Dock="Bottom"/>
+            </DockPanel>
         </Button>
     </StackPanel>
 </Window>

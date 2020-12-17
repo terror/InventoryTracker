@@ -29,6 +29,7 @@ namespace InventoryTracker.Models {
         public void Reset() {
             Item.ResetIDCounter();
             items.Clear();
+            revenueMadeFromDeletedItems = 0;
         }
 
         ///<summary> Reset inventory and load item list from provided JSON file. </summary>
@@ -46,31 +47,68 @@ namespace InventoryTracker.Models {
         ///<summary> Returns a general report as a string </summary>
         public string GenerateReport() {
             StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < this.items.Count; ++i) {
-                sb.AppendLine(string.Format("Name: {0}\n Quantity: {1}\n Cost: {2}\n Value: {3}",
-                    items[i].Name,
-                    items[i].Quantity,
-                    items[i].Cost,
-                    items[i].Cost * items[i].Quantity
-               ));
+            if (items.Count == 0) {
+                sb.AppendLine("Inventory is empty!\n");
+            } else {
+                for (int i = 0; i < items.Count; ++i) {
+                    sb.AppendLine(items[i].Name);
+                    sb.AppendLine("↳ " + items[i].Quantity + " in stock");
+                    sb.AppendLine("↳ " + items[i].Cost.ToString("C") + " per unit");
+                    sb.AppendLine("↳ Value of " + (items[i].Cost * items[i].Quantity).ToString("C") + "\n");
+                }
             }
-
-            sb.AppendLine(string.Format("\nTotal Value: {0:c}\n", GetTotalValue()));
-            sb.AppendLine(string.Format("Revenue: {0:c}", GetTotalRevenue()));
-
+            sb.AppendLine(string.Format("Total Value: {0:C}", GetTotalValue()));
+            sb.AppendLine(string.Format("Total Revenue: {0:C}", GetTotalRevenue()));
             return sb.ToString();
         }
 
         ///<summary> Returns a quantitative analysis report as a string </summary>
         public string QuantityAnalysis() {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("\n--- Quantity Analysis ---");
-            for (int i = 0; i < this.items.Count; ++i) {
-                if (items[i].Quantity < items[i].OptimalQuantity)
-                    sb.AppendLine(string.Format("Item: {0}, Quantity: {1}, Optimal Quantity: {2} \n", items[i].Name, items[i].Quantity, items[i].OptimalQuantity));
+            if (items.Count == 0) {
+                return "Inventory is empty!";
             }
-            return sb.ToString();
+
+            StringBuilder sbTotal = new StringBuilder();
+            StringBuilder sbOverOptimal = new StringBuilder();
+            StringBuilder sbOptimal = new StringBuilder();
+            StringBuilder sbUnderOptimal = new StringBuilder();
+            bool hasOverOptimal = false;
+            bool hasOptimal = false;
+            bool hasUnderOptimal = false;
+
+            sbOverOptimal.AppendLine("-- Items with quantity above their optimal quantity --");
+            sbOptimal.AppendLine("-- Items with quantity equal to their optimal quantity --");
+            sbUnderOptimal.AppendLine("-- Items with quantity under their optimal quantity --");
+
+            for (int i = 0; i < items.Count; ++i) {
+                if (items[i].Quantity > items[i].OptimalQuantity) {
+                    hasOverOptimal = true;
+                    sbOverOptimal.AppendLine(items[i].Name);
+                    sbOverOptimal.AppendLine("↳ Quantity: " + items[i].Quantity);
+                    sbOverOptimal.AppendLine("↳ Optimal Quantity: " + items[i].OptimalQuantity);
+                    sbOverOptimal.AppendLine("↳ Difference: " + (items[i].Quantity - items[i].OptimalQuantity) + "\n");
+                } else if (items[i].Quantity < items[i].OptimalQuantity) {
+                    hasUnderOptimal = true;
+                    sbUnderOptimal.AppendLine(items[i].Name);
+                    sbUnderOptimal.AppendLine("↳ Quantity: " + items[i].Quantity);
+                    sbUnderOptimal.AppendLine("↳ Optimal Quantity: " + items[i].OptimalQuantity);
+                    sbUnderOptimal.AppendLine("↳ Difference: " + (items[i].Quantity - items[i].OptimalQuantity) + "\n");
+                } else {
+                    hasOptimal = true;
+                    sbOptimal.AppendLine(items[i].Name);
+                    sbOptimal.AppendLine("↳ Quantity: " + items[i].Quantity);
+                    sbOptimal.AppendLine("↳ Optimal Quantity: " + items[i].OptimalQuantity);
+                    sbOptimal.AppendLine("↳ Difference: " + (items[i].Quantity - items[i].OptimalQuantity) + "\n");
+                }
+            }
+
+            if (hasOverOptimal)
+                sbTotal.Append(sbOverOptimal + "\n");
+            if (hasOptimal)
+                sbTotal.Append(sbOptimal + "\n");
+            if (hasUnderOptimal)
+                sbTotal.Append(sbUnderOptimal);
+            return sbTotal.ToString();
         }
 
         ///<summary> Returns an item according to a provided ID </summary>
@@ -110,7 +148,7 @@ namespace InventoryTracker.Models {
             return true;
         }
 
-        ///<summary> Merge sort inventory items and return them </summary>
+        ///<summary> Sort inventory items and return them </summary>
         public List<Item> SortItems(bool asc, Func<Item, IComparable> getProp) {
             return asc ? Sorter.sort(items, getProp) : Sorter.sortDesc(items, getProp);
         }

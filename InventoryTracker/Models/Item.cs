@@ -49,8 +49,11 @@ namespace InventoryTracker.Models {
         }
 
         public string Name { get; set; }
+
         public double Cost { get; set; }
+
         public int OptimalQuantity { get; set; }
+
         public string Category {
             get { return category; }
             set { category = string.IsNullOrWhiteSpace(value) ? "N/A" : value; }
@@ -107,14 +110,7 @@ namespace InventoryTracker.Models {
         }
 
         public static void CheckProperties(string name_, string cost_, string optimalQuantity_, string quantity_) {
-            if (string.IsNullOrWhiteSpace(name_))
-                throw new ArgumentException("Name cannot be empty.");
-            if (!double.TryParse(cost_, out double parsedCost) || parsedCost < 0)
-                throw new ArgumentException("Cost must be a valid double and cannot be less than 0.");
-            if (Math.Round(parsedCost, 2) != parsedCost)
-                throw new ArgumentException("Cost can only have up to two numbers after the decimal point.");
-            if (!int.TryParse(optimalQuantity_, out int parsedOptimalQuantity) || parsedOptimalQuantity < 0)
-                throw new ArgumentException("Optimal Quantity a must be a valid integer and cannot be less than 0.");
+            CheckProperties(name_, cost_, optimalQuantity_);
             if (!int.TryParse(quantity_, out int parsedQuantity) || parsedQuantity < 0)
                 throw new ArgumentException("Quantity must be a valid integer and cannot be less than 0.");
         }

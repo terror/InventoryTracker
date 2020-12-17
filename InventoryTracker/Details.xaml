@@ -44,7 +44,7 @@
 
             <!-- Name -->
             <TextBlock Text="Name:" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0"/>
-            <TextBox x:Name="txtName" Grid.Row="0" Grid.Column="2"/>
+            <TextBox x:Name="txtName" TextChanged="txt_TextChanged" Grid.Row="0" Grid.Column="2"/>
 
             <!-- ID -->
             <TextBlock Text="ID:" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="4"/>
@@ -52,27 +52,27 @@
 
             <!-- Cost -->
             <TextBlock Text="Cost ($):" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0"/>
-            <TextBox x:Name="txtCost" Grid.Row="2" Grid.Column="2"/>
+            <TextBox x:Name="txtCost" TextChanged="txt_TextChanged" Grid.Row="2" Grid.Column="2"/>
 
             <!-- Category -->
             <TextBlock Text="Category:" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="4"/>
-            <TextBox x:Name="txtCategory" Grid.Row="2" Grid.Column="6"/>
+            <TextBox x:Name="txtCategory" TextChanged="txt_TextChanged" Grid.Row="2" Grid.Column="6"/>
 
             <!-- Quantity -->
             <TextBlock Text="Current Quantity:" HorizontalAlignment="Right" Grid.Row="4" Grid.Column="0"/>
-            <TextBox x:Name="txtQuantity" Grid.Row="4" Grid.Column="2"/>
+            <TextBox x:Name="txtQuantity" TextChanged="txt_TextChanged" Grid.Row="4" Grid.Column="2"/>
 
             <!-- Supplier -->
             <TextBlock Text="Supplier:" HorizontalAlignment="Right" Grid.Row="4" Grid.Column="4"/>
-            <TextBox x:Name="txtSupplier" Grid.Row="4" Grid.Column="6"/>
+            <TextBox x:Name="txtSupplier" TextChanged="txt_TextChanged" Grid.Row="4" Grid.Column="6"/>
 
             <!-- Optimal Quantity -->
             <TextBlock Text="Optimal Quantity:" HorizontalAlignment="Right" Grid.Row="6" Grid.Column="0"/>
-            <TextBox x:Name="txtOptimalQuantity" Grid.Row="6" Grid.Column="2"/>
+            <TextBox x:Name="txtOptimalQuantity" TextChanged="txt_TextChanged" Grid.Row="6" Grid.Column="2"/>
 
             <!-- Location -->
             <TextBlock Text="Location:" HorizontalAlignment="Right" Grid.Row="6" Grid.Column="4"/>
-            <TextBox x:Name="txtLocation" Grid.Row="6" Grid.Column="6"/>
+            <TextBox x:Name="txtLocation" TextChanged="txt_TextChanged" Grid.Row="6" Grid.Column="6"/>
         </Grid>
 
         <!-- Done / Cancel -->

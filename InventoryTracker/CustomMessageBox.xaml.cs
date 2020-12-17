@@ -58,7 +58,7 @@ namespace InventoryTracker {
 
         // Conversion code made by 'Kenan E. K.' from Stack Overflow
         // https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource/38190733
-        private static ImageSource ConvertIconToImage(Icon icon) {
+        public static ImageSource ConvertIconToImage(Icon icon) {
             Bitmap bitmap = icon.ToBitmap();
             IntPtr hBitmap = bitmap.GetHbitmap();
             return Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());

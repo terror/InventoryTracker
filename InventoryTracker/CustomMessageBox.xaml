@@ -17,15 +17,16 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition MaxHeight="400"/>
             <RowDefinition Height="20"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="txtMessage" TextWrapping="Wrap" MinWidth="300" MaxWidth="500" Grid.ColumnSpan="5" Grid.Row="0"/>
-        <Button x:Name="btnOK" Content="OK" IsCancel="True" Visibility="Collapsed" MaxWidth="50" Grid.ColumnSpan="5" Grid.Row="3"/>
-        <Button x:Name="btnYes" Content="Yes" Click="btnYes_Click" Visibility="Collapsed" MaxWidth="50" Grid.Column="1" Grid.Row="4"/>
-        <Button x:Name="btnNo" Content="No" IsCancel="True" Visibility="Collapsed" MaxWidth="50" Grid.Column="3" Grid.Row="4"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="5" Grid.Row="0">
+            <TextBlock x:Name="txtMessage" TextWrapping="Wrap" MinWidth="300" MaxWidth="500" />
+        </ScrollViewer>
+        <Button x:Name="btnOK" Content="OK" IsCancel="True" Visibility="Collapsed" MaxWidth="50" Grid.ColumnSpan="5" Grid.Row="2"/>
+        <Button x:Name="btnYes" Content="Yes" Click="btnYes_Click" Visibility="Collapsed" MaxWidth="50" Grid.Column="1" Grid.Row="3"/>
+        <Button x:Name="btnNo" Content="No" IsCancel="True" Visibility="Collapsed" MaxWidth="50" Grid.Column="3" Grid.Row="3"/>
     </Grid>
 </Window>

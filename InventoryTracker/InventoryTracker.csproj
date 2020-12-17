@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\CancelIcon.png" />
+    <None Remove="Images\DontSaveIcon.png" />
     <None Remove="Images\Icon.ico" />
+    <None Remove="Images\SaveIcon.png" />
     <None Remove="Images\TrashIcon.png" />
     <None Remove="Images\TrashIconFocus.png" />
     <None Remove="Models\NewFile1.txt" />
@@ -22,7 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\CancelIcon.png" />
+    <Resource Include="Images\DontSaveIcon.png" />
     <Resource Include="Images\Icon.ico" />
+    <Resource Include="Images\SaveIcon.png" />
     <Resource Include="Images\TrashIcon.png" />
     <Resource Include="Images\TrashIconFocus.png" />
   </ItemGroup>

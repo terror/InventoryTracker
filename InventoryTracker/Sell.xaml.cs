@@ -51,6 +51,7 @@ namespace InventoryTracker {
                     if (mainWindow.inventory.IsEmpty()) {
                         mainWindow.btnSellItem.IsEnabled = false;
                     }
+                    mainWindow.justSaved = false;
 
                 } else {
                     new CustomMessageBox(this, "Quantity must be a valid integer.", "Quantity Error for " + item.Name, SystemIcons.Error, SystemSounds.Hand).ShowDialog();

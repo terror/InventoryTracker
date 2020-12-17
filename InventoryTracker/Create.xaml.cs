@@ -42,6 +42,7 @@ namespace InventoryTracker
             // Add to list
             mainWindow.inventory.CreateItem(item);
             mainWindow.AddItemToWindow(item);
+            mainWindow.justSaved = false;
 
             Close();
         }

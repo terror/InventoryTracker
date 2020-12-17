@@ -17,6 +17,7 @@ namespace InventoryTracker {
     public partial class MainWindow : Window {
         public Inventory inventory = new Inventory();
         private bool itemGridBGColor1 = true;
+        public bool justSaved = true;
 
         public MainWindow() {
             InitializeComponent();
@@ -225,40 +226,55 @@ namespace InventoryTracker {
         }
 
         public void btnResetItem_Click(object sender, RoutedEventArgs e) {
-            // Warn first
-            CustomMessageBox messageBox = new CustomMessageBox(this, "Are you sure you want to reset the entire inventory?\nThis action cannot be reverted.",
+            // Warn first if unsaved changes
+            if (!justSaved) {
+                CustomMessageBox messageBox = new CustomMessageBox(this, "Are you sure you want to reset the entire inventory?\nThis action cannot be reverted.",
                 "Reset Confirmation", SystemIcons.Warning, SystemSounds.Exclamation, false);
-            messageBox.ShowDialog();
+                messageBox.ShowDialog();
 
-            if (messageBox.clickedYes) {
-                inventory.Reset();
-                spItemList.Children.Clear();
-                UpdateTotalValue();
-                UpdateTotalRevenue();
+                if (!messageBox.clickedYes) {
+                    return;
+                }
             }
+
+            inventory.Reset();
+            spItemList.Children.Clear();
+            UpdateTotalValue();
+            UpdateTotalRevenue();
+            justSaved = true;
         }
 
         private void ReloadItemList(List<Item> items) {
             spItemList.Children.Clear();
+            itemGridBGColor1 = true;
             foreach (Item item in items) {
                 AddItemToWindow(item);
             }
         }
 
         public void btnLoadItem_Click(object sender, RoutedEventArgs e) {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Json file|*.json";
+            // Warn first if unsaved changes
+            if (!justSaved) {
+                CustomMessageBox messageBox = new CustomMessageBox(this, "Are you sure you load a new inventory?\nYour current inventory will be replaced.",
+                    "Load Confirmation", SystemIcons.Warning, SystemSounds.Exclamation, false);
+                messageBox.ShowDialog();
+
+                if (!messageBox.clickedYes) {
+                    return;
+                }
+            }
+            
+            OpenFileDialog openFileDialog = new OpenFileDialog { Filter = "Json file|*.json" }; ;
             if (openFileDialog.ShowDialog() == true) {
                 List<Item> items;
                 try {
                     items = inventory.LoadFromFile(openFileDialog.FileName);
                 }
                 catch (Exception exception) {
-                    new CustomMessageBox(this, "File could not be read:\n" + exception.Message, 
+                    new CustomMessageBox(this, "File could not be read:\n" + exception.Message,
                         "Load Error", SystemIcons.Error, SystemSounds.Hand).ShowDialog();
                     return;
                 }
-                new CustomMessageBox(this, "Successfully loaded information from " + openFileDialog.FileName, "Load successful").ShowDialog();
 
                 ReloadItemList(items);
                 UpdateTotalValue();
@@ -268,23 +284,36 @@ namespace InventoryTracker {
                 } else {
                     btnSellItem.IsEnabled = true;
                 }
+                cmbSortOptions.SelectedIndex = 0;
+                cmbSortOrder.SelectedIndex = 0;
+
+                new CustomMessageBox(this, "Successfully loaded information from " + openFileDialog.FileName, "Load successful").ShowDialog();
+                justSaved = true;
             }
         }
 
         public void btnSaveItem_Click(object sender, RoutedEventArgs e) {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Json file|*.json";
+            SaveInventory();
+        }
+
+        private bool SaveInventory() {
+            SaveFileDialog saveFileDialog = new SaveFileDialog { Filter = "Json file|*.json" };
             if (saveFileDialog.ShowDialog() == true) {
                 try {
+                    inventory.SortItems(true, x => x.ID);
                     inventory.SaveToFile(saveFileDialog.FileName);
                 }
                 catch (Exception exception) {
-                    new CustomMessageBox(this, "File could not be written:\n" + exception.Message, 
+                    new CustomMessageBox(this, "File could not be written:\n" + exception.Message,
                         "Save Error", SystemIcons.Error, SystemSounds.Hand).ShowDialog();
-                    return;
+                    return false;
                 }
+
                 new CustomMessageBox(this, "Successfully saved information to " + saveFileDialog.FileName, "Save successful").ShowDialog();
+                justSaved = true;
+                return true;
             }
+            return false;
         }
 
         private void spItemListChild_MouseDown(object sender, MouseEventArgs e) {
@@ -315,8 +344,8 @@ namespace InventoryTracker {
             qty.Text = item.Quantity.ToString();
             UpdateTotalValue();
 
-            // Enable selling
             btnSellItem.IsEnabled = true;
+            justSaved = false;
         }
          
 
@@ -341,6 +370,7 @@ namespace InventoryTracker {
                 if (inventory.IsEmpty()) {      
                     btnSellItem.IsEnabled = false;
                 }
+                justSaved = false;
             }
         }
 
@@ -374,11 +404,23 @@ namespace InventoryTracker {
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+            // Warn first if unsaved changes, otherwise close immediately
+            if (!justSaved) {
+                Exit exitPage = new Exit(this);
+                exitPage.ShowDialog();
 
-            // if not empty and not justsaved
-            
-            // use exit...
-            //Error errorPage = new CustomMessageBox(this, "Unsaved Changes", "You have unsaved changes! If you close this application all data will be lost.\nAre you sure you want to leave?");
+                switch (exitPage.clickedSave, exitPage.willClose) {
+                    case (true, true):
+                        if (!SaveInventory())
+                            e.Cancel = true;
+                        break;
+                    case (false, true):
+                        break;
+                    case (false, false):
+                        e.Cancel = true;
+                        break;
+                }
+            }
         }
     }
 }
